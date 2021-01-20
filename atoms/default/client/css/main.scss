@@ -1,0 +1,33 @@
+@import "fonts";
+@import "mq";
+@import "palette";
+@import "enhancer";
+
+.interactive-atom {
+    margin: 0;
+    padding: 0;
+}
+
+.over{
+	stroke:black;
+}
+
+.tooltip-container{
+		pointer-events: none;
+		max-width:150px;
+		height: max-content;
+		padding:8px;
+		background: rgba(255, 255, 255, 0.9);
+		border: 1px solid #333;
+		color: #333333;
+		border-top: 1px solid #333;
+		position: absolute;
+		z-index: 100000;
+		line-height: 18.2px;
+
+		opacity: 0;
+
+		&.over{
+			opacity: 1;
+		}
+}
