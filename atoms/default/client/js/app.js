@@ -6,19 +6,38 @@ import { numberWithCommas } from 'shared/js/util'
 
 const d3 = Object.assign({}, d3B, topojson, geoProjection);
 
-const atomEl = d3.select('.interactive-world-wrapper').node()
+const atomEl = d3.select('.map-container').node()
 
 const isMobile = window.matchMedia('(max-width: 600px)').matches;
 
 let width = atomEl.getBoundingClientRect().width;
-let height =  isMobile ? width : width * 2.5 / 5;
+let height =  width * 2.5 / 5;
 
 let projection = d3.geoEckert4();
 
 let path = d3.geoPath()
 .projection(projection);
 
-projection.fitSize([width, height], topojson.feature(worldMap, worldMap.objects.countries));
+let extent = {
+        type: "LineString",
+        /*coordinates: [
+
+            [minLon, maxLat],
+            [maxLon, maxLat],
+            [maxLon, minLat],
+            [minLon, minLat],
+        ]*/
+
+         coordinates: [
+            [-20, -50],
+            [40, -50],
+            [40, 80],
+            [-20, 80],
+        ]
+}
+
+projection
+.fitExtent([[0, 0], [width, height]], extent);
 
 const filtered = topojson.feature(worldMap, worldMap.objects.countries).features.filter(f => f.properties.name != 'Antarctica')
 
@@ -48,25 +67,52 @@ let namesToDisplay = [];
 let casesToDisplay = [];
 let casesMillionToDisplay = [];
 
-
-
-const map = d3.select('.interactive-world-wrapper')
+const map = d3.select('.map-container')
 .append('svg')
 .attr('id', 'coronavirus-world-map-svg')
 .attr('width', width)
 .attr('height', height);
 
-let colors = ['#F2EBDC', '#F5BE2C', '#ED6300', '#CC0A11', '#951D7A', '#333333'];
+let colors = ['#F5BE2C', '#FF7F00', '#ED6300', '#CC0A11', '#951D7A', '#333333'];
 
-let colorScale = d3.scaleLinear()
-.range([0,6]);
+let colorScale = d3.scaleThreshold()
+.range(colors);
+
+colors.map(d => {
+
+	d3.select('.key-bar')
+	.append('div')
+	.attr('class', 'key-color-box')
+	.style('background', d)
+})
+
+for (var i = 0; i < colors.length + 1; i++) {
+
+	d3.select('.key-footer')
+	.append('div')
+	.attr('id', 'key-text-' + i)
+	.attr('class', 'key-text-box')
+	.html(i)
+}
+
 
 d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.json')
 .then(data => {
 
 	let max = d3.max(data, d => d.fortnightrate);
 
-	colorScale.domain([0,max])
+	colorScale.domain([max/6,max/5,max/4,max/3,max/2,max])
+
+	let divider = 0;
+
+	for (var i = 1; i <= 7; i++) {
+
+		let divider = 7 - i;
+
+		d3.select('#key-text-' + (i))
+		.html(numberWithCommas(Math.round((+max * 1000000) / (divider)/100)*100))
+	}
+
 
 	map.append('g')
 	.selectAll('path')
@@ -82,7 +128,9 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.js
 	})
 	.attr('fill', '#dadada')
 	.attr('stroke', '#fafafa')
+	.attr('stroke-width','0.5px')
 	.attr('pointer-events', 'none')
+	.attr('stroke-linecap', 'round')
 	.on('mouseover', event => {
 		highlight(event.target.attributes.class.value)
 
@@ -96,11 +144,11 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.js
 		let replaced = d['Country/Region'].replace(/[^\w]/gi, '');
 
 		namesToDisplay[replaced] = d['Country/Region'];
-		casesToDisplay[replaced] = d.allTime;
-		casesMillionToDisplay[replaced] = parseInt(+d.fortnightrate * 1000000);
+		casesToDisplay[replaced] = (+d.alltimerate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0});
+		casesMillionToDisplay[replaced] = (+d.fortnightrate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0});
 
 		map.selectAll('.' + replaced)
-		.attr('fill', colors[parseInt(colorScale(d.fortnightrate))])
+		.attr('fill', colorScale(d.fortnightrate))
 		.attr('pointer-events', 'all')
 		
 	})
@@ -121,6 +169,9 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.js
 	.attr('stroke-width','1.5px')
 	.attr('pointer-events', 'none')
 	.attr('stroke-linecap', 'round')
+
+
+	if(window.resize)window.resize()
 })
 
 
@@ -142,26 +193,25 @@ const manageOver = (value) => {
 
 const manageMove = (event) => {
 
-	/*console.log(d3.pointer(event))*/
-
 	let here = d3.pointer(event);
 
     let left = here[0];
-    let top = here[1];
+    let top = here[1] + d3.select('.key-container').node().getBoundingClientRect().height + 40;
     let tWidth = d3.select('.tooltip-container').node().getBoundingClientRect().width;
     let tHeight = d3.select('.tooltip-container').node().getBoundingClientRect().height;
 
-    let posX = left + 10;
-    let posY = top + 10;
+    let posX = left - tWidth / 2;
+    let posY = top + 20;
 
-    if(posX + tWidth > width)posX = width - tWidth - 2
+    if(posX + tWidth > width) posX = width - tWidth;
+    if(posX < 0) posX = 0;
+    if(posY + tHeight + 20 > height) posY = posY - tHeight - 40;
+    if(posY < 0) posY = 0;
 
     d3.select('.tooltip-container').style('left',  posX + 'px')
     d3.select('.tooltip-container').style('top', posY + 'px')
 
 }
-	
-
 
 const highlight = (value) => {
 
