@@ -51,7 +51,7 @@ let matches = [
 {atlasName:'Solomon', jhName:'Solomon Islands'},
 {atlasName:"Côte d'Ivoire", jhName:'Cote dIvoire'},
 {atlasName:'Macedonia', jhName:'North Macedonia'},
-{atlasName:'Dominican', jhName:'Dominican Republic'},
+{atlasName:'Dominican Rep.', jhName:'Dominican Republic'},
 {atlasName:'Somaliland', jhName:'Somalia'},
 {atlasName:'eSwatini', jhName:'Eswatini'},
 {atlasName:'Eq. Guinea', jhName:'Equatorial Guinea'},
@@ -109,7 +109,7 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.js
 
 		let divider = 7 - i;
 
-		d3.select('#key-text-' + (i))
+		d3.select('#key-text-' + i)
 		.html(numberWithCommas(Math.round((+max * 1000000) / (divider)/100)*100))
 	}
 
