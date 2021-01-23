@@ -102,3 +102,9 @@
 	right: 0;
 	margin-top: 8px;
 }
+
+.click-text{
+	@include fs-textSans(2);
+	color: #B3B3B4;
+	margin-bottom: 8px;
+}
