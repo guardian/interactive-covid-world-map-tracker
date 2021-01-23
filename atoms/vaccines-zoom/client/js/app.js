@@ -20,13 +20,6 @@ let path = d3.geoPath()
 
 let extent = {
         type: "LineString",
-        /*coordinates: [
-
-            [minLon, maxLat],
-            [maxLon, maxLat],
-            [maxLon, minLat],
-            [minLon, minLat],
-        ]*/
 
          coordinates: [
             [-20, -50],
@@ -46,6 +39,21 @@ const map = d3.select('.vac-map-container')
 .attr('id', 'vaccines-world-map-svg')
 .attr('width', width)
 .attr('height', height);
+
+map.append("rect")
+    .attr("class", "background")
+    .attr("width", width)
+    .attr("height", height)
+    .on("click", d => clicked())
+    .attr('opacity', 0)
+
+let resetZoom = d3.select("#gv-choropleth-svg")
+.on("click", d => clicked());
+
+const g = map.append('g');
+
+const choropleth = g.append('g');
+const strokeMap = g.append('g');
 
 let colors = ['#E6F5FF', '#A1D5F2', '#5DB6E4', '#1896D7', '#056DA1', '#333333'];
 
@@ -91,7 +99,7 @@ d3.csv('https://interactive.guim.co.uk/2021/jan/vaccinations/vaccinations.csv')
 		.html(Math.round(+max / divider))
 	}
 
-	map.append('g')
+	choropleth
 	.selectAll('path')
 	.data(filtered)
 	.enter()
@@ -109,6 +117,7 @@ d3.csv('https://interactive.guim.co.uk/2021/jan/vaccinations/vaccinations.csv')
 	})
 	.on('mouseout', event => resetHighlight())
 	.on('mousemove', event => manageMove(event))
+	.on('click', (event,d) => clicked(d))
 
 	const isoCodes = [...new Set(data.map(d => d.iso_code))];
 
@@ -127,18 +136,15 @@ d3.csv('https://interactive.guim.co.uk/2021/jan/vaccinations/vaccinations.csv')
 
 		if(latest.iso_code.length == 3)
 		{
-			console.log(latest.people_vaccinated_per_hundred, colorScale(latest.people_vaccinated_per_hundred))
 			d3.selectAll('.' + code)
 			.attr('fill', colorScale(+latest.people_vaccinated_per_hundred))
 			.attr('pointer-events', 'all');
-
-			console.log(code, latest.iso_code)
 		}
 
 		
 	})
 
-	const strokeMap = map.append('g')
+	strokeMap
 	.selectAll('path')
 	.data(filtered)
 	.enter()
@@ -160,30 +166,30 @@ const manageOver = (value) => {
 	.classed('over', true)
 
 	let header = d3.select('.vac-tooltip-header-container')
-	.html(namesToDisplay[value]);
+	.html(namesToDisplay[value.split(' ')[0]]);
 
 	let cases = d3.select('.vac-cases-counter-value')
-	.html(numberWithCommas(casesToDisplay[value]))
+	.html(numberWithCommas(casesToDisplay[value.split(' ')[0]]))
 
 	let perHundred = d3.select('.vac-cases-hundred-value')
-	.html(numberWithCommas(casesHundredToDisplay[value]) + '%')
+	.html(numberWithCommas(casesHundredToDisplay[value.split(' ')[0]]) + '%')
 }
 
 const manageMove = (event) => {
 
-	let here = d3.pointer(event);
+    let left = event.clientX + -atomEl.getBoundingClientRect().left;
+    let top = event.clientY + -atomEl.getBoundingClientRect().top;
 
-    let left = here[0];
-    let top = here[1] + d3.select('.vac-key-container').node().getBoundingClientRect().height + 40;
+
     let tWidth = d3.select('.vac-tooltip-container').node().getBoundingClientRect().width;
     let tHeight = d3.select('.vac-tooltip-container').node().getBoundingClientRect().height;
 
-    let posX = left - tWidth / 2;
-    let posY = top + 20;
+    let posX = left - tWidth /2;
+    let posY = top + tHeight + 20;
 
     if(posX + tWidth > width) posX = width - tWidth;
     if(posX < 0) posX = 0;
-    if(posY + tHeight + 20 > height) posY = posY - tHeight - 40;
+    if(posY + tHeight > height) posY = top;
     if(posY < 0) posY = 0;
 
     d3.select('.vac-tooltip-container').style('left',  posX + 'px')
@@ -193,7 +199,7 @@ const manageMove = (event) => {
 
 const highlight = (value) => {
 
-	d3.select('.s-' + value)
+	d3.select('.s-' + value.split(' ')[0])
 	.style('stroke', '#333333')
 
 }
@@ -205,4 +211,54 @@ const resetHighlight = () => {
 
 	d3.selectAll('.stroke')
 	.style('stroke', 'none')
+}
+
+
+let centered;
+
+const clicked = (d) => {
+
+  var x, y, k;
+
+  if (d && centered !== d) {
+
+    var centroid = path.centroid(d);
+
+    x = centroid[0];
+    y = centroid[1];
+    k = 4;
+    centered = d;
+  } else {
+    x = width / 2;
+    y = height / 2;
+    k = 1;
+    centered = null;
+  }
+
+  strokeMap.selectAll('path')
+	.style('display', 'none')
+
+  g.selectAll("path")
+      .classed("active", centered && function(d) { return d === centered; });
+
+  g.transition()
+      .duration(750)
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+      .on('end', d => {
+      	strokeMap.selectAll('path')
+		.style('display', 'block')
+      })
+
+      console.log(k)
+  
+  choropleth.selectAll('path')
+  .style("stroke-width", 1 / k + "px");
+
+  strokeMap.selectAll('path')
+  .style("stroke-width", 1.5 / k + "px");
+
+  
+
+  resetZoom
+  .style('display', centered ? 'block' : 'none')
 }

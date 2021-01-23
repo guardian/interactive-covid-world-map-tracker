@@ -13,7 +13,7 @@ const isMobile = window.matchMedia('(max-width: 600px)').matches;
 let width = atomEl.getBoundingClientRect().width;
 let height =  width * 2.5 / 5;
 
-let projection = d3.geoEckert4();
+let projection = d3.geoRobinson();
 
 let path = d3.geoPath()
 .projection(projection);
