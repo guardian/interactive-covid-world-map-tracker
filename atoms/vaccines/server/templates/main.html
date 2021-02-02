@@ -1,20 +1,29 @@
 <div class="interactive-vaccines-wrapper">
 	<div class="vac-interactive-header">Which countries have vaccinated the most people?</div>
 	<div class="vac-key-container">
-		<div class="vac-key-header">Percentage of people vaccinated, to date</div>
+		<div class="vac-key-header">Percentage of people to have received at least one dose, to date</div>
 		<div class="vac-key-bar"></div>
 		<div class="vac-key-footer"></div>
 	</div>
-	<div class="vac-map-container"></div>
+	<div class='click-text'>Click to zoom into the map</div>
+	<div class="vac-map-container">
+		<svg id="gv-choropleth-svg" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 100 100">
+			<g id="gv-reset-button" class="show-reset">
+				<circle r="38" style="fill: white; stroke: rgb(18, 18, 18); stroke-width: 3px;" transform="translate(41, 41)"></circle>
+					<path d="M12 4C16.425 4 19.9749 7.62499 19.9749 12C19.9749 16.425 16.425 19.9749 12 19.9749C7.57499 19.9749 4 16.425 4 12C4 7.62499 7.57499 4 12 4ZM12 6.02499C8.67498 6.02499 6.02499 8.67498 6.02499 12C6.02499 15.3 8.67498 18 12 18C15.3 18 18 15.3 18 12C18 8.67498 15.3 6.02499 12 6.02499ZM7.99999 12.75V11.25H16V12.75H7.99999ZM20.0249 18L25.9999 23.9749L23.9749 25.9999L18 20.0249V18.9999L18.9999 18H20.0249Z" transform="translate(20, 20) scale(2, 2) translate(-5, -5)">
+					</path>
+			</g>
+		</svg>
+	</div>
 	<div class="vac-interactive-footer">
-		Source: Our World in Data. People vaccinated includes anyone to have received at least one dose of a Covid vaccine. Numbers as reported by individual countries.
+		"Source: Our World in Data. Note: The figures relate to individual doses of vaccine, not people vaccinated. Since the intent is usually to give each person two doses, these figures do not represent a percentage of the population. Numbers as reported by individual countries.
 	</div>
 
 	<div class="vac-tooltip-container">
 		<div class="vac-tooltip-header-container"></div>
 		<div class="vac-tooltip-content-container">
 			<div class="vac-cases-counter">
-				<div class="vac-cases-counter-header">People vaccinated</div>
+				<div class="vac-cases-counter-header">Total vaccinations</div>
 				<div class="vac-cases-counter-value"></div>
 			</div>
 			<div class="vac-cases-million-counter">
@@ -24,3 +33,5 @@
 		</div>
 	</div>
 </div>
+
+

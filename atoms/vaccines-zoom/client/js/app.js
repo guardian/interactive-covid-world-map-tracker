@@ -108,7 +108,7 @@ d3.csv('https://interactive.guim.co.uk/2021/jan/vaccinations/vaccinations.csv')
 	.attr('class', d => d.properties.ISO_A3_EH)
 	.attr('fill', '#DADADA')
 	.attr('stroke', '#ffffff')
-	.attr('stroke-width','0.5px')
+	.attr('stroke-width','1px')
 	.attr('pointer-events', 'none')
 	.attr('stroke-linecap', 'round')
 	.on('mouseover', event => {
@@ -185,11 +185,11 @@ const manageMove = (event) => {
     let tHeight = d3.select('.vac-tooltip-container').node().getBoundingClientRect().height;
 
     let posX = left - tWidth /2;
-    let posY = top + tHeight + 20;
+    let posY = top + tHeight + 50;
 
     if(posX + tWidth > width) posX = width - tWidth;
     if(posX < 0) posX = 0;
-    if(posY + tHeight > height) posY = top;
+    if(posY + tHeight > height) posY = top + 20;
     if(posY < 0) posY = 0;
 
     d3.select('.vac-tooltip-container').style('left',  posX + 'px')
@@ -235,28 +235,27 @@ const clicked = (d) => {
     centered = null;
   }
 
-  strokeMap.selectAll('path')
-	.style('display', 'none')
-
   g.selectAll("path")
       .classed("active", centered && function(d) { return d === centered; });
 
   g.transition()
       .duration(750)
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-      .on('end', d => {
-      	strokeMap.selectAll('path')
-		.style('display', 'block')
-      })
 
-      console.log(k)
   
   choropleth.selectAll('path')
-  .style("stroke-width", 1 / k + "px");
+  .transition()
+      .duration(750)
+ .style("stroke-width", 1 / k + "px")
+
 
   strokeMap.selectAll('path')
-  .style("stroke-width", 1.5 / k + "px");
-
+  .transition()
+      .duration(750)
+  .style("stroke-width", 1.5 / k + "px")
+  .on('end', d => {
+ 	centered ? strokeMap.selectAll('path').style("stroke-width", 0.5 + "px") : strokeMap.selectAll('path').style("stroke-width", 1.5 + "px")
+ })
   
 
   resetZoom

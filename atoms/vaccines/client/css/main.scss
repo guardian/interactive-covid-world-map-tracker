@@ -8,6 +8,10 @@
     padding: 0;
 }
 
+.interactive-vaccines-wrapper{
+	background: white;
+}
+
 .vac-interactive-header{
 	@include fs-header(3);
 }
@@ -94,4 +98,21 @@
 	margin-bottom: 5px;
 	border-bottom: 2px dotted #b3b3b3;
 	height:20px;
+}
+
+#gv-choropleth-svg{
+	display: none;
+	position: absolute;
+	right: 0;
+	margin-top: 8px;
+}
+
+.click-text{
+	@include fs-textSans(2);
+	color: #B3B3B4;
+	margin-bottom: 8px;
+}
+
+.gv-background{
+	fill:white;
 }

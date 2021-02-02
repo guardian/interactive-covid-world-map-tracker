@@ -6,14 +6,15 @@ import { numberWithCommas } from 'shared/js/util'
 
 const d3 = Object.assign({}, d3B, topojson, geoProjection);
 
-const atomEl = d3.select('.map-container').node()
+const atomEl = d3.select('.map-europe-container').node()
 
 const isMobile = window.matchMedia('(max-width: 600px)').matches;
 
 let width = atomEl.getBoundingClientRect().width;
-let height =  width * 2.5 / 5;
+let height =  width * 520 / 620;
 
-let projection = d3.geoRobinson();
+let projection = d3.geoAlbers()
+.rotate([-20.0, 0.0]);
 
 let path = d3.geoPath()
 .projection(projection);
@@ -22,10 +23,10 @@ let extent = {
         type: "LineString",
 
          coordinates: [
-            [-20, -50],
-            [40, -50],
-            [40, 80],
-            [-20, 80],
+            [-8, 70],
+            [40, 70],
+            [40, 35],
+            [-8, 35],
         ]
 }
 
@@ -61,20 +62,11 @@ let namesToDisplay = [];
 let casesToDisplay = [];
 let casesMillionToDisplay = [];
 
-const map = d3.select('.map-container')
+const map = d3.select('.map-europe-container')
 .append('svg')
-.attr('id', 'coronavirus-world-map-svg')
+.attr('id', 'coronavirus-europe-map-svg')
 .attr('width', width)
 .attr('height', height);
-
-map.append("rect")
-    .attr("class", "gv-background")
-    .attr("width", width)
-    .attr("height", height)
-    .on("click", d => clicked())
-
-let resetZoom = d3.select("#gv-choropleth-svg")
-.on("click", d => clicked());
 
 const g = map.append('g');
 
@@ -88,18 +80,18 @@ let colorScale = d3.scaleThreshold()
 
 colors.map(d => {
 
-	d3.select('.key-bar')
+	d3.select('.key-europe-bar')
 	.append('div')
-	.attr('class', 'key-color-box')
+	.attr('class', 'key-europe-color-box')
 	.style('background', d)
 })
 
 for (var i = 0; i < colors.length + 1; i++) {
 
-	d3.select('.key-footer')
+	d3.select('.key-europe-footer')
 	.append('div')
-	.attr('id', 'key-text-' + i)
-	.attr('class', 'key-text-box')
+	.attr('id', 'key-europe-text-' + i)
+	.attr('class', 'key-europe-text-box')
 	.html(i)
 }
 
@@ -117,9 +109,10 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.js
 
 		let divider = 7 - i;
 
-		d3.select('#key-text-' + i)
+		d3.select('#key-europe-text-' + i)
 		.html(numberWithCommas(Math.round((+max * 1000000) / (divider)/100)*100))
 	}
+
 
 	choropleth
 	.selectAll('path')
@@ -150,8 +143,6 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.js
 
 		let replaced = d['Country/Region'].replace(/[^\w]/gi, '');
 
-
-		console.log(d['Country/Region'], replaced)
 		namesToDisplay[replaced] = d['Country/Region'];
 		casesToDisplay[replaced] = (+d.alltimerate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0});
 		casesMillionToDisplay[replaced] = (+d.fortnightrate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0});
@@ -187,16 +178,16 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.js
 
 const manageOver = (value) => {
 
-	d3.select('.tooltip-container')
+	d3.select('.tooltip-europe-container')
 	.classed('over', true)
 
-	let header = d3.select('.tooltip-header-container')
+	let header = d3.select('.tooltip-europe-header-container')
 	.html(namesToDisplay[value.split(' ')[0]]);
 
-	let cases = d3.select('.cases-counter-value')
+	let cases = d3.select('.cases-europe-counter-value')
 	.html(numberWithCommas(casesToDisplay[value.split(' ')[0]]))
 
-	let perMillion = d3.select('.cases-million-value')
+	let perMillion = d3.select('.cases-europe-million-value')
 	.html(numberWithCommas(casesMillionToDisplay[value.split(' ')[0]]))
 }
 
@@ -206,19 +197,19 @@ const manageMove = (event) => {
     let top = event.clientY + -atomEl.getBoundingClientRect().top;
 
 
-    let tWidth = d3.select('.tooltip-container').node().getBoundingClientRect().width;
-    let tHeight = d3.select('.tooltip-container').node().getBoundingClientRect().height;
+    let tWidth = d3.select('.tooltip-europe-container').node().getBoundingClientRect().width;
+    let tHeight = d3.select('.tooltip-europe-container').node().getBoundingClientRect().height;
 
     let posX = left - tWidth /2;
-    let posY = top + tHeight + 50;
+    let posY = top + tHeight +30;
 
     if(posX + tWidth > width) posX = width - tWidth;
     if(posX < 0) posX = 0;
-    if(posY + tHeight > height) posY = top + 20;
+    if(posY + tHeight > height) posY = top ;
     if(posY < 0) posY = 0;
 
-    d3.select('.tooltip-container').style('left',  posX + 'px')
-    d3.select('.tooltip-container').style('top', posY + 'px')
+    d3.select('.tooltip-europe-container').style('left',  posX + 'px')
+    d3.select('.tooltip-europe-container').style('top', posY + 'px')
 
 }
 
@@ -231,57 +222,9 @@ const highlight = (value) => {
 
 const resetHighlight = () => {
 
-	d3.select('.tooltip-container')
+	d3.select('.tooltip-europe-container')
 	.classed('over', false)
 
 	d3.selectAll('.stroke')
 	.style('stroke', 'none')
-}
-
-let centered;
-
-const clicked = (d) => {
-
-  var x, y, k;
-
-  if (d && centered !== d) {
-
-    var centroid = path.centroid(d);
-
-    x = centroid[0];
-    y = centroid[1];
-    k = 4;
-    centered = d;
-  } else {
-    x = width / 2;
-    y = height / 2;
-    k = 1;
-    centered = null;
-  }
-
-  g.selectAll("path")
-      .classed("active", centered && function(d) { return d === centered; });
-
-  g.transition()
-      .duration(750)
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-
-  
-  choropleth.selectAll('path')
-  .transition()
-      .duration(750)
- .style("stroke-width", 1 / k + "px")
-
-
-  strokeMap.selectAll('path')
-  .transition()
-      .duration(750)
-  .style("stroke-width", 1.5 / k + "px")
-  .on('end', d => {
- 	centered ? strokeMap.selectAll('path').style("stroke-width", 0.5 + "px") : strokeMap.selectAll('path').style("stroke-width", 1.5 + "px")
- })
-  
-
-  resetZoom
-  .style('display', centered ? 'block' : 'none')
 }
