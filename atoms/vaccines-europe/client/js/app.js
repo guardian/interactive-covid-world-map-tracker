@@ -47,10 +47,6 @@ map.append("rect")
     .attr("class", "gv-background")
     .attr("width", width)
     .attr("height", height)
-    .on("click", d => clicked())
-
-let resetZoom = d3.select("#gv-choropleth-svg")
-.on("click", d => clicked());
 
 const g = map.append('g');
 
@@ -215,53 +211,4 @@ const resetHighlight = () => {
 
 	d3.selectAll('.stroke')
 	.style('stroke', 'none')
-}
-
-
-let centered;
-
-const clicked = (d) => {
-
-  var x, y, k;
-
-  if (d && centered !== d) {
-
-    var centroid = path.centroid(d);
-
-    x = centroid[0];
-    y = centroid[1];
-    k = 4;
-    centered = d;
-  } else {
-    x = width / 2;
-    y = height / 2;
-    k = 1;
-    centered = null;
-  }
-
-  g.selectAll("path")
-      .classed("active", centered && function(d) { return d === centered; });
-
-  g.transition()
-      .duration(750)
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-
-  
-  choropleth.selectAll('path')
-  .transition()
-      .duration(750)
- .style("stroke-width", 1 / k + "px")
-
-
-  strokeMap.selectAll('path')
-  .transition()
-      .duration(750)
-  .style("stroke-width", 1.5 / k + "px")
-  .on('end', d => {
- 	centered ? strokeMap.selectAll('path').style("stroke-width", 0.5 + "px") : strokeMap.selectAll('path').style("stroke-width", 1.5 + "px")
- })
-  
-
-  resetZoom
-  .style('display', centered ? 'block' : 'none')
 }
