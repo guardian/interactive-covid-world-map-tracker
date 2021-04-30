@@ -23,9 +23,9 @@ let extent = {
         type: "LineString",
 
          coordinates: [
-            [-8, 70],
-            [40, 70],
-            [40, 35],
+            [-8, 75],
+            [25, 75],
+            [25, 35],
             [-8, 35],
         ]
 }
@@ -73,7 +73,7 @@ const g = map.append('g');
 const choropleth = g.append('g');
 const strokeMap = g.append('g');
 
-let colors = ['#F5BE2C', '#FF7F00', '#ED6300', '#CC0A11', '#951D7A', '#333333'];
+let colors = ['#FBE5AB', '#F5BE2C', '#ED6300', '#CC0A11', '#951D7A', '#333333'];
 
 let colorScale = d3.scaleThreshold()
 .range(colors);

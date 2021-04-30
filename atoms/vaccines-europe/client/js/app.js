@@ -6,14 +6,15 @@ import { numberWithCommas } from 'shared/js/util'
 
 const d3 = Object.assign({}, d3B, topojson, geoProjection);
 
-const atomEl = d3.select('.vac-map-container').node()
+const atomEl = d3.select('.vac-map-europe-container').node()
 
 const isMobile = window.matchMedia('(max-width: 600px)').matches;
 
 let width = atomEl.getBoundingClientRect().width;
-let height =  width * 2.5 / 5;
+let height =  width * 520 / 620;
 
-let projection = d3.geoRobinson();
+let projection = d3.geoAlbers()
+.rotate([-20.0, 0.0]);
 
 let path = d3.geoPath()
 .projection(projection);
@@ -22,19 +23,21 @@ let extent = {
         type: "LineString",
 
          coordinates: [
-            [-20, -50],
-            [40, -50],
-            [40, 80],
-            [-20, 80],
+            [-8, 75],
+            [25, 75],
+            [25, 35],
+            [-8, 35],
         ]
 }
 
 projection
 .fitExtent([[0, 0], [width, height]], extent);
 
+
+
 const filtered = topojson.feature(worldMap, worldMap.objects.ne_10m_admin_0_countries_crimea_ukraine).features.filter(f => f.properties.name != 'Antarctica')
 
-const map = d3.select('.vac-map-container')
+const map = d3.select('.vac-map-europe-container')
 .append('svg')
 .attr('id', 'vaccines-world-map-svg')
 .attr('width', width)
