@@ -172,7 +172,7 @@ const manageOver = (value) => {
 	.html(numberWithCommas(casesToDisplay[value.split(' ')[0]]))
 
 	let perHundred = d3.select('.vac-cases-hundred-value')
-	.html(numberWithCommas(casesHundredToDisplay[value.split(' ')[0]]) + '%')
+	.html(numberWithCommas(casesHundredToDisplay[value.split(' ')[0]]))
 }
 
 const manageMove = (event) => {
