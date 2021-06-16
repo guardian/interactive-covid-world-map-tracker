@@ -1,7 +1,8 @@
 import * as d3B from 'd3'
 import * as topojson from 'topojson'
 import * as geoProjection from 'd3-geo-projection'
-import worldMap from 'assets/ne_10m_admin_0_countries_crimea_ukraine.json'
+//import worldMap from 'assets/ne_10m_admin_0_countries_crimea_ukraine.json'
+import worldMap from 'assets/world-map-crimea-ukr-continent.json'
 import { numberWithCommas } from 'shared/js/util'
 
 const d3 = Object.assign({}, d3B, topojson, geoProjection);
@@ -33,30 +34,7 @@ let extent = {
 projection
 .fitExtent([[0, 0], [width, height]], extent);
 
-const filtered = topojson.feature(worldMap, worldMap.objects.ne_10m_admin_0_countries_crimea_ukraine).features.filter(f => f.properties.name != 'Antarctica')
-
-let matches = [
-{atlasName:'United States of America', jhName:'US'},
-{atlasName:'United Kingdom', jhName:'UK'},
-{atlasName:'Myanmar', jhName:'Burma'},
-{atlasName:'South Korea', jhName:'Korea, South'},
-{atlasName:'Czechia', jhName:'Czech Republic'},
-{atlasName:'Bosnia', jhName:'Bosnia and Herzegovina'},
-{atlasName:'Solomon', jhName:'Solomon Islands'},
-{atlasName:"Côte d'Ivoire", jhName:'Cote dIvoire'},
-{atlasName:'Macedonia', jhName:'North Macedonia'},
-{atlasName:'Dominican Rep.', jhName:'Dominican Republic'},
-{atlasName:'Somaliland', jhName:'Somalia'},
-{atlasName:'eSwatini', jhName:'Eswatini'},
-{atlasName:'Eq. Guinea', jhName:'Equatorial Guinea'},
-{atlasName:'Central African Rep.', jhName:'Central African Republic'},
-{atlasName:'S. Sudan', jhName:'South Sudan'},
-{atlasName:'Dem. Rep. Congo', jhName:'Congo (Kinshasa)'},
-{atlasName:'Congo', jhName:'Congo (Brazzaville)'},
-{atlasName:'Palestine', jhName:'West Bank and Gaza'},
-{atlasName:'N. Cyprus', jhName:'Cyprus'},
-{atlasName:'Bosnia and Herz.', jhName:'Bosnia and Herzegovina'}
-];
+const filtered = topojson.feature(worldMap, worldMap.objects['world-map-crimea-ukr-continent']).features.filter(f => f.properties.REGION_UN == 'Europe' || f.properties.REGION_UN == 'Africa' || f.properties.REGION_UN == 'Asia')
 
 let namesToDisplay = [];
 let casesToDisplay = [];
@@ -68,10 +46,8 @@ const map = d3.select('.map-europe-container')
 .attr('width', width)
 .attr('height', height);
 
-const g = map.append('g');
-
-const choropleth = g.append('g');
-const strokeMap = g.append('g');
+const choropleth = map.append('g');
+const smalls = map.append('g')
 
 let colors = ['#FBE5AB', '#F5BE2C', '#ED6300', '#CC0A11', '#951D7A', '#333333'];
 
@@ -99,7 +75,36 @@ for (var i = 0; i < colors.length + 1; i++) {
 d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.json')
 .then(data => {
 
-	let max = d3.max(data, d => d.fortnightrate);
+
+	console.log(data)
+
+	data.map(d => {
+
+		let replaced = d['Country/Region'].replace(/[^\w]/gi, '');	
+
+		if(replaced == 'UK')replaced = 'UnitedKingdom';
+		if(replaced == 'CzechRepublic')replaced = 'Czechia';
+		if(replaced == 'BosniaandHerzegovina')replaced = 'BosniaandHerz';
+		if(replaced == 'NorthMacedonia')replaced = 'Macedonia';
+
+
+		let match = filtered.find(f => f.properties.NAME.replace(/[^\w]/gi, '') === replaced)
+
+		if(match)
+		{
+			match.alltimerate = +d.alltimerate;
+			match.fortnightrate = +d.fortnightrate;
+			match.alltimerate = +d.alltimerate;
+		}
+
+		
+	})
+
+	let max = d3.max(filtered.filter(f => f.properties.REGION_UN == 'Europe' && f.properties.REGION_WB.indexOf('Europe') != -1), d => +d.fortnightrate);
+
+		console.log(max, filtered.find(f => +f.fortnightrate === max))
+
+
 
 	colorScale.domain([max/6,max/5,max/4,max/3,max/2,max])
 
@@ -114,81 +119,98 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.js
 	}
 
 
+
+
 	choropleth
 	.selectAll('path')
 	.data(filtered)
 	.enter()
 	.append('path')
 	.attr('d', path)
-	.attr('class', d => {
-		let region = d.properties.NAME;
-		let match = matches.find(f => f.atlasName == region)
-		if(match) return match.jhName.replace(/[^\w]/gi, '')
-		else return region.replace(/[^\w]/gi, '')
-	})
-	.attr('fill', '#DADADA')
+	.attr('class', d => d.properties.ISO_A3_EH)
+	.attr('fill', d => colorScale(+d.fortnightrate) || '#dadada' )
 	.attr('stroke', '#ffffff')
 	.attr('stroke-width','1px')
-	.attr('pointer-events', 'none')
 	.attr('stroke-linecap', 'round')
-	.on('mouseover', event => {
-		highlight(event.target.attributes.class.value)
-		manageOver(event.target.attributes.class.value)
+	.on('mouseover', (e,d) => {
+
+		choropleth.selectAll('.' + d.properties.ISO_A3_EH)
+		.classed('map-over', true)
+		.raise()
+
+		manageOver(d)
 	})
-	.on('mouseout', event => resetHighlight())
-	.on('mousemove', event => manageMove(event))
-	.on('click', (event,d) => clicked(d))
+	.on('mouseout', e => {
+		choropleth.selectAll('path').classed('map-over', false)
 
-	data.map(d => {
-
-		let replaced = d['Country/Region'].replace(/[^\w]/gi, '');
-
-		namesToDisplay[replaced] = d['Country/Region'];
-		casesToDisplay[replaced] = (+d.alltimerate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0});
-		casesMillionToDisplay[replaced] = (+d.fortnightrate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0});
-
-		map.selectAll('.' + replaced)
-		.attr('fill', colorScale(d.fortnightrate))
-		.attr('pointer-events', 'all')
-		
+		d3.select('.tooltip-europe-container')
+		.classed('over', false)
 	})
+	.on('mousemove', e => manageMove(e))
+	.attr('size', d => {
 
-	strokeMap
-	.selectAll('path')
-	.data(filtered)
-	.enter()
-	.append('path')
-	.attr('d', path)
-	.attr('class', d => {
-		let region = d.properties.NAME;
-		let match = matches.find(f => f.atlasName == region)
-		if(match) return 'stroke s-' + match.jhName.replace(/[^\w]/gi, '')
-		else return 'stroke s-' + region.replace(/[^\w]/gi, '')
-	})
-	.attr('fill','none')
-	.attr('stroke-width','1.5px')
-	.attr('pointer-events', 'none')
-	.attr('stroke-linecap', 'round')
+		let centroid = path.centroid(filtered.find(f => f.properties.ISO_A3_EH === d.properties.ISO_A3_EH));
+
+		if(d.properties.ISO_A3_EH != '-99')	
+		{
+			let w = choropleth.select('.' + d.properties.ISO_A3_EH).node().getBoundingClientRect().width;
+
+			if(w < 20 && w > 0 || d.properties.ISO_A3_EH === 'MDV')
+			{
+
+				let circle = smalls.append('circle')
+				.attr('r', 5)
+				.attr('cx', centroid[0] - 2.5)
+				.attr('cy',  centroid[1] - 2.5)
+				.attr('class', d.properties.ISO_A3_EH)
+				.attr('fill', colorScale(d.fortnightrate) || '#dadada')
+				.attr('stroke', '#ffffff')
+				.attr('stroke-width','1px')
+				.on('mouseover', e => {
+
+					smalls.selectAll('.' + d.properties.ISO_A3_EH)
+					.classed('map-over', true)
+					.raise()
+
+					manageOver(d)
+				})
+				.on('mousemove', e => manageMove(e))
+				.on('mouseout', e => {
+					
+					smalls.selectAll('circle').classed('map-over', false)
+
+					d3.select('.tooltip-asia-container')
+					.classed('over', false)
+				})
+				
+			}	
+		}
+	} )
+
+	
 
 
 	if(window.resize)window.resize()
 })
 
-
-
-const manageOver = (value) => {
+const manageOver = (d) => {
 
 	d3.select('.tooltip-europe-container')
 	.classed('over', true)
 
 	let header = d3.select('.tooltip-europe-header-container')
-	.html(namesToDisplay[value.split(' ')[0]]);
+	.html(d.properties.NAME);
+
+	console.log(d.alltimerate, d.fortnightrate, isNaN(+d.alltimerate), isNaN(+d.fortnightrate))
+
+	let casesText = isNaN(+d.alltimerate) ? 'No data' : (+d.alltimerate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0})
+	let fornightText = isNaN(+d.fortnightrate) ? 'No data' : (+d.fortnightrate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0})
 
 	let cases = d3.select('.cases-europe-counter-value')
-	.html(numberWithCommas(casesToDisplay[value.split(' ')[0]]))
+	.html(casesText)
 
 	let perMillion = d3.select('.cases-europe-million-value')
-	.html(numberWithCommas(casesMillionToDisplay[value.split(' ')[0]]))
+	.html(fornightText)
 }
 
 const manageMove = (event) => {
@@ -213,18 +235,3 @@ const manageMove = (event) => {
 
 }
 
-const highlight = (value) => {
-
-	d3.select('.s-' + value)
-	.style('stroke', '#333333')
-
-}
-
-const resetHighlight = () => {
-
-	d3.select('.tooltip-europe-container')
-	.classed('over', false)
-
-	d3.selectAll('.stroke')
-	.style('stroke', 'none')
-}

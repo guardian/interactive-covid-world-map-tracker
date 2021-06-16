@@ -107,7 +107,11 @@ for (var i = 0; i < colors.length + 1; i++) {
 d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.json')
 .then(data => {
 
-	let max = d3.max(data, d => d.fortnightrate);
+	
+	let max = d3.max(data, d => d.fortnightrate) / 2;
+
+
+	console.log(data, max, (max * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0}))
 
 	colorScale.domain([max/6,max/5,max/4,max/3,max/2,max])
 
@@ -151,10 +155,12 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.js
 		let replaced = d['Country/Region'].replace(/[^\w]/gi, '');
 
 
-		console.log(d['Country/Region'], replaced)
+		
 		namesToDisplay[replaced] = d['Country/Region'];
 		casesToDisplay[replaced] = (+d.alltimerate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0});
 		casesMillionToDisplay[replaced] = (+d.fortnightrate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0});
+
+		console.log(d['Country/Region'], replaced, (+d.fortnightrate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0}))
 
 		map.selectAll('.' + replaced)
 		.attr('fill', colorScale(d.fortnightrate))
@@ -241,6 +247,8 @@ const resetHighlight = () => {
 let centered;
 
 const clicked = (d) => {
+
+	console.log(d)
 
   var x, y, k;
 

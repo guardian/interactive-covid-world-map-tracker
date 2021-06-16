@@ -71,7 +71,7 @@
 		color: #333333;
 		border-top: 1px solid #333;
 		position: absolute;
-		z-index: 100000;
+		z-index: 1;
 		line-height: 18.2px;
 
 		opacity: 0;
@@ -98,4 +98,10 @@
 	margin-bottom: 5px;
 	border-bottom: 2px dotted #b3b3b3;
 	height:20px;
+}
+
+
+.map-over{
+    stroke: #333333;
+    stroke-width:1.5px;
 }

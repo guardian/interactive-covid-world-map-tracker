@@ -122,6 +122,8 @@ d3.csv('https://interactive.guim.co.uk/2021/jan/vaccinations/vaccinations.csv')
 
 	isoCodes.map( code =>{
 
+
+
 		let countryDataRaw = data.filter( d => d.iso_code === code);
 		let countryDate = d3.max([...new Set(countryDataRaw.map(d => new Date(d.date)))]);
 
@@ -129,7 +131,32 @@ d3.csv('https://interactive.guim.co.uk/2021/jan/vaccinations/vaccinations.csv')
 
 		let latest = country.find(d => new Date(d.date).getTime() === countryDate.getTime())
 
-		//console.log(code, latest.people_vaccinated, latest.total_vaccinations_per_hundred)
+		if(code == 'POR' ||code == 'AUS' || code == 'NZL'|| code == 'SGP' || code == 'BRN' || code == 'ISL' || code == 'FRO'|| code == 'GIB'|| code == 'FLK'|| code == 'ISR'|| code == 'SHN')console.log(code, latest.total_vaccinations_per_hundred)
+			/*Australia
+
+New Zealand
+
+Singapore
+
+Brunai
+
+Iceland
+
+Faroe Islands
+
+Gibraltar
+
+Falkland Islands
+
+Israel + Jerusalem
+
+South Georgia and the South Sandwich Islands
+
+Saint Helena, Ascension and Tristan da Cunha
+
+Portugal - including Azores and Madeira*/
+
+		
 
 		namesToDisplay[code] = latest.location;
 		casesToDisplay[code] = latest.people_vaccinated || '-';
