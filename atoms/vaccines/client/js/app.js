@@ -84,7 +84,7 @@ let casesHundredToDisplay = [];
 d3.csv('https://interactive.guim.co.uk/2021/jan/vaccinations/vaccinations.csv')
 .then(data => {
 
-	let max = 100//d3.max(data, d => +d.total_vaccinations_per_hundred);
+	let max = 200//d3.max(data, d => +d.people_fully_vaccinated_per_hundred);
 
 	colorScale.domain([max/6,max/5,max/4,max/3,max/2,max])
 
@@ -122,51 +122,50 @@ d3.csv('https://interactive.guim.co.uk/2021/jan/vaccinations/vaccinations.csv')
 
 	isoCodes.map( code =>{
 
-
-
-		let countryDataRaw = data.filter( d => d.iso_code === code);
+	/*	let countryDataRaw = data.filter( d => d.iso_code === code);
 		let countryDate = d3.max([...new Set(countryDataRaw.map(d => new Date(d.date)))]);
 
 		let country = data.filter(d => d.iso_code === code)
 
 		let latest = country.find(d => new Date(d.date).getTime() === countryDate.getTime())
 
-		if(code == 'POR' ||code == 'AUS' || code == 'NZL'|| code == 'SGP' || code == 'BRN' || code == 'ISL' || code == 'FRO'|| code == 'GIB'|| code == 'FLK'|| code == 'ISR'|| code == 'SHN')console.log(code, latest.total_vaccinations_per_hundred)
-			/*Australia
-
-New Zealand
-
-Singapore
-
-Brunai
-
-Iceland
-
-Faroe Islands
-
-Gibraltar
-
-Falkland Islands
-
-Israel + Jerusalem
-
-South Georgia and the South Sandwich Islands
-
-Saint Helena, Ascension and Tristan da Cunha
-
-Portugal - including Azores and Madeira*/
-
-		
+		if(code == 'POR' ||code == 'AUS' || code == 'NZL'|| code == 'SGP' || code == 'BRN' || code == 'ISL' || code == 'FRO'|| code == 'GIB'|| code == 'FLK'|| code == 'ISR'|| code == 'SHN')console.log(code, latest.people_fully_vaccinated_per_hundred)
 
 		namesToDisplay[code] = latest.location;
 		casesToDisplay[code] = latest.people_vaccinated || '-';
-		casesHundredToDisplay[code] = latest.total_vaccinations_per_hundred || '-';
+		casesHundredToDisplay[code] = latest.people_fully_vaccinated_per_hundred || '-';
 
 		if(latest.iso_code.length == 3)
 		{
 			d3.selectAll('.' + code)
-			.attr('fill', colorScale(+latest.total_vaccinations_per_hundred))
+			.attr('fill', colorScale(+latest.people_fully_vaccinated_per_hundred))
 			.attr('pointer-events', 'all');
+		}*/
+
+		let countryData = data.filter(f => f.iso_code === code)
+
+		let i = countryData.length-1;
+
+		while (i < countryData.length && i >= 0) {
+		  
+		  if (countryData[i].people_fully_vaccinated_per_hundred != '' && countryData[i].total_vaccinations != '') {
+
+		  	namesToDisplay[code] = countryData[i].location;
+			casesToDisplay[code] = countryData[i].people_vaccinated;
+			casesHundredToDisplay[code] = countryData[i].people_fully_vaccinated_per_hundred;
+
+		  	if(countryData[i].iso_code.length === 3) {
+
+		  		d3.selectAll('.' + code)
+				.attr('fill', colorScale(+countryData[i].people_fully_vaccinated_per_hundred))
+				.attr('pointer-events', 'all');
+
+		  	}
+
+		    break;
+		  }
+		  
+		  i--;
 		}
 
 		

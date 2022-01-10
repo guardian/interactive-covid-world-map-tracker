@@ -4,6 +4,7 @@ import * as geoProjection from 'd3-geo-projection'
 //import worldMap from 'assets/ne_10m_admin_0_countries_crimea_ukraine.json'
 import worldMap from 'assets/world-map-crimea-ukr-continent.json'
 import { numberWithCommas } from 'shared/js/util'
+import * as moment from 'moment'
 
 const d3 = Object.assign({}, d3B, topojson, geoProjection);
 
@@ -49,7 +50,7 @@ const map = d3.select('.map-europe-container')
 const choropleth = map.append('g');
 const smalls = map.append('g')
 
-let colors = ['#FBE5AB', '#F5BE2C', '#ED6300', '#CC0A11', '#951D7A', '#333333'];
+let colors = ['#fae0eb','#f6c1d6','#f1a1c1','#ec7fab','#e65a91','#df2770'];
 
 let colorScale = d3.scaleThreshold()
 .range(colors);
@@ -71,12 +72,15 @@ for (var i = 0; i < colors.length + 1; i++) {
 	.html(i)
 }
 
+/*d3.json('https://interactive.guim.co.uk/2020/coronavirus-central-data/timestamp.json')
+.then(t => {
 
-d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.json')
+
+	d3.select('.interactive-europe-footer')
+	.html(`Source: Johns Hopkins University Note: JHU collates this data from multiple sources whose methodologies may differ from each other. In addition, many of the sources have changed their reporting practices since the beginning of the pandemic or made revisions to their data. Cases as published on ${moment(t.timestamp).format("DD MMM YYYY")}.`)*/
+
+d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayratepermillion/cases.json')
 .then(data => {
-
-
-	console.log(data)
 
 	data.map(d => {
 
@@ -87,36 +91,36 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.js
 		if(replaced == 'BosniaandHerzegovina')replaced = 'BosniaandHerz';
 		if(replaced == 'NorthMacedonia')replaced = 'Macedonia';
 
+		let value = +d.sevenDayRate[Object.getOwnPropertyNames(d.sevenDayRate)[0]];
+
 
 		let match = filtered.find(f => f.properties.NAME.replace(/[^\w]/gi, '') === replaced)
 
 		if(match)
 		{
-			match.alltimerate = +d.alltimerate;
-			match.fortnightrate = +d.fortnightrate;
-			match.alltimerate = +d.alltimerate;
+			match.alltimerate = +d.allTimeRate;
+			match.sevenDayRate = value;
 		}
 
 		
 	})
 
-	let max = d3.max(filtered.filter(f => f.properties.REGION_UN == 'Europe' && f.properties.REGION_WB.indexOf('Europe') != -1), d => +d.fortnightrate);
-
-		console.log(max, filtered.find(f => +f.fortnightrate === max))
+	let max = d3.max(filtered.filter(f => f.properties.REGION_UN == 'Europe' && f.properties.REGION_WB.indexOf('Europe') != -1), d => +d.sevenDayRate);
 
 
-
-	colorScale.domain([max/6,max/5,max/4,max/3,max/2,max])
-
-	let divider = 0;
+	let arr = []
 
 	for (var i = 1; i <= 7; i++) {
 
 		let divider = 7 - i;
 
 		d3.select('#key-europe-text-' + i)
-		.html(numberWithCommas(Math.round((+max * 1000000) / (divider)/100)*100))
+		.html(numberWithCommas(Math.floor((+max / divider)/100)*100))
+
+		arr.push(Math.floor((+max / divider)/100)*100)
 	}
+
+	colorScale.domain(arr)
 
 
 
@@ -128,7 +132,7 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.js
 	.append('path')
 	.attr('d', path)
 	.attr('class', d => d.properties.ISO_A3_EH)
-	.attr('fill', d => colorScale(+d.fortnightrate) || '#dadada' )
+	.attr('fill', d => colorScale(+d.sevenDayRate) || '#dadada' )
 	.attr('stroke', '#ffffff')
 	.attr('stroke-width','1px')
 	.attr('stroke-linecap', 'round')
@@ -143,7 +147,7 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.js
 	.on('mouseout', e => {
 		choropleth.selectAll('path').classed('map-over', false)
 
-		d3.select('.tooltip-europe-container')
+		d3.select('.interactive-europe-wrapper .tooltip-europe-container')
 		.classed('over', false)
 	})
 	.on('mousemove', e => manageMove(e))
@@ -163,7 +167,7 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.js
 				.attr('cx', centroid[0] - 2.5)
 				.attr('cy',  centroid[1] - 2.5)
 				.attr('class', d.properties.ISO_A3_EH)
-				.attr('fill', colorScale(d.fortnightrate) || '#dadada')
+				.attr('fill', colorScale(d.sevenDayRate) || '#dadada')
 				.attr('stroke', '#ffffff')
 				.attr('stroke-width','1px')
 				.on('mouseover', e => {
@@ -192,19 +196,17 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.js
 
 	if(window.resize)window.resize()
 })
-
+//})
 const manageOver = (d) => {
 
-	d3.select('.tooltip-europe-container')
+	d3.select('.interactive-europe-wrapper .tooltip-europe-container')
 	.classed('over', true)
 
 	let header = d3.select('.tooltip-europe-header-container')
 	.html(d.properties.NAME);
 
-	console.log(d.alltimerate, d.fortnightrate, isNaN(+d.alltimerate), isNaN(+d.fortnightrate))
-
 	let casesText = isNaN(+d.alltimerate) ? 'No data' : (+d.alltimerate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0})
-	let fornightText = isNaN(+d.fortnightrate) ? 'No data' : (+d.fortnightrate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0})
+	let fornightText = isNaN(+d.sevenDayRate) ? 'No data' : numberWithCommas(+d.sevenDayRate);
 
 	let cases = d3.select('.cases-europe-counter-value')
 	.html(casesText)
@@ -215,12 +217,14 @@ const manageOver = (d) => {
 
 const manageMove = (event) => {
 
+	console.log('aaaa', event)
+
 	let left = event.clientX + -atomEl.getBoundingClientRect().left;
     let top = event.clientY + -atomEl.getBoundingClientRect().top;
 
 
-    let tWidth = d3.select('.tooltip-europe-container').node().getBoundingClientRect().width;
-    let tHeight = d3.select('.tooltip-europe-container').node().getBoundingClientRect().height;
+    let tWidth = d3.select('.interactive-europe-wrapper .tooltip-europe-container').node().getBoundingClientRect().width;
+    let tHeight = d3.select('.interactive-europe-wrapper .tooltip-europe-container').node().getBoundingClientRect().height;
 
     let posX = left - tWidth /2;
     let posY = top + tHeight +30;
@@ -230,8 +234,10 @@ const manageMove = (event) => {
     if(posY + tHeight > height) posY = top ;
     if(posY < 0) posY = 0;
 
-    d3.select('.tooltip-europe-container').style('left',  posX + 'px')
-    d3.select('.tooltip-europe-container').style('top', posY + 'px')
+    d3.select('.interactive-europe-wrapper .tooltip-europe-container').style('left',  posX + 'px')
+    d3.select('.interactive-europe-wrapper .tooltip-europe-container').style('top', posY + 'px')
 
 }
+
+
 

@@ -27,10 +27,10 @@ let extent = {
         type: "LineString",
 
          coordinates: [
-            [60, 0],
+            [54, 0],
             [140, 0],
             [140, 40],
-            [60, 40],
+            [54, 40],
         ]
 }
 
@@ -52,7 +52,8 @@ const map = d3.select('.map-asia-container')
 const choropleth = map.append('g');
 const smalls = map.append('g')
 
-let colors = ['#FBE5AB', '#F5BE2C', '#ED6300', '#CC0A11', '#951D7A', '#333333'];
+let colors = ['#fae0eb','#f6c1d6','#f1a1c1','#ec7fab','#e65a91','#df2770'];
+
 
 let colorScale = d3.scaleThreshold()
 .range(colors);
@@ -75,51 +76,50 @@ for (var i = 0; i < colors.length + 1; i++) {
 }
 
 
-d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.json')
+d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayratepermillion/cases.json')
 .then(data => {
 
 	data.map(d => {
-
-		//console.log(d["Country/Region"])
 
 		let replaced = d['Country/Region'].replace(/[^\w]/gi, '');
 
 		if(replaced == 'Burma')replaced = 'Myanmar';
 		if(replaced == 'KoreaSouth')replaced = 'SouthKorea';
 
+		let value = +d.sevenDayRate[Object.getOwnPropertyNames(d.sevenDayRate)[0]];
+
 
 		let match = filtered.find(f => f.properties.NAME.replace(/[^\w]/gi, '') === replaced)
 
 		if(match)
 		{
-			match.alltimerate = +d.alltimerate;
-			match.fortnightrate = +d.fortnightrate;
-			match.alltimerate = +d.alltimerate;
+			match.alltimerate = +d.allTimeRate;
+			match.sevenDayRate = value;
 		}
 
 		
 	})
 
-	let max = d3.max(filtered.filter(f => f.properties.REGION_UN == 'Asia' && f.properties.REGION_WB.indexOf('Asia') != -1), d => +d.fortnightrate);
+	let max = d3.max(filtered.filter(f => f.properties.REGION_UN == 'Asia' && f.properties.REGION_WB.indexOf('Asia') != -1), d => +d.sevenDayRate);
+
+	max /= 10
 
 
-	max /= 3
-
-
-	colorScale.domain([max/6,max/5,max/4,max/3,max/2,max])
-
-	let divider = 0;
+	let arr = []
 
 	for (var i = 1; i <= 7; i++) {
 
 		let divider = 7 - i;
 
+		console.log(Math.round(+max / divider))
+
 		d3.select('#key-asia-text-' + i)
-		.html(numberWithCommas(Math.round((+max * 1000000) / (divider)/100)*100))
+		.html(numberWithCommas(Math.round((+max / divider)/25)*25))
+
+		arr.push(Math.round((+max / divider)/25)*25)
 	}
 
-
-
+	colorScale.domain(arr)
 
 	choropleth
 	.selectAll('path')
@@ -129,9 +129,8 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.js
 	.attr('d', path)
 	.attr('class', d => d.properties.ISO_A3_EH)
 	.attr('fill', d => {
-		console.log(colorScale(+d.fortnightrate))
 
-		return colorScale(+d.fortnightrate) || '#dadada' 
+		return colorScale(+d.sevenDayRate) || '#dadada' 
 	})
 	.attr('stroke', '#ffffff')
 	.attr('stroke-width','1px')
@@ -167,7 +166,7 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/processed-jhu-cases-data.js
 				.attr('cx', centroid[0] - 2.5)
 				.attr('cy',  centroid[1] - 2.5)
 				.attr('class', d.properties.ISO_A3_EH)
-				.attr('fill', colorScale(d.fortnightrate) || '#dadada')
+				.attr('fill', colorScale(d.sevenDayRate) || '#dadada')
 				.attr('stroke', '#ffffff')
 				.attr('stroke-width','1px')
 				.on('mouseover', e => {
@@ -205,10 +204,8 @@ const manageOver = (d) => {
 	let header = d3.select('.tooltip-asia-header-container')
 	.html(d.properties.NAME);
 
-	console.log(d.alltimerate, d.fortnightrate, isNaN(+d.alltimerate), isNaN(+d.fortnightrate))
-
 	let casesText = isNaN(+d.alltimerate) ? 'No data' : (+d.alltimerate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0})
-	let fornightText = isNaN(+d.fortnightrate) ? 'No data' : (+d.fortnightrate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0})
+	let fornightText = isNaN(+d.sevenDayRate) ? 'No data' : numberWithCommas(+d.sevenDayRate);
 
 	let cases = d3.select('.cases-asia-counter-value')
 	.html(casesText)

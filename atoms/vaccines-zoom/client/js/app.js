@@ -1,7 +1,7 @@
 import * as d3B from 'd3'
 import * as topojson from 'topojson'
 import * as geoProjection from 'd3-geo-projection'
-import worldMap from 'assets/ne_10m_admin_0_countries.json'
+import worldMap from 'assets/ne_10m_admin_0_countries_crimea_ukraine.json'
 import { numberWithCommas } from 'shared/js/util'
 
 const d3 = Object.assign({}, d3B, topojson, geoProjection);
@@ -32,7 +32,7 @@ let extent = {
 projection
 .fitExtent([[0, 0], [width, height]], extent);
 
-const filtered = topojson.feature(worldMap, worldMap.objects.ne_10m_admin_0_countries).features.filter(f => f.properties.name != 'Antarctica')
+const filtered = topojson.feature(worldMap, worldMap.objects.ne_10m_admin_0_countries_crimea_ukraine).features.filter(f => f.properties.name != 'Antarctica')
 
 const map = d3.select('.vac-map-container')
 .append('svg')
@@ -55,10 +55,11 @@ const g = map.append('g');
 const choropleth = g.append('g');
 const strokeMap = g.append('g');
 
-let colors = ['#E6F5FF', '#A1D5F2', '#5DB6E4', '#1896D7', '#056DA1', '#333333'];
+let colors = ['#E6F5FF', '#A1D5F2', '#5DB6E4', '#1896D7', '#056DA1'];
 
 let colorScale = d3.scaleThreshold()
-.range(colors);
+.range(colors)
+.domain([25,50,75,100,125]);
 
 colors.map(d => {
 
@@ -74,7 +75,7 @@ for (var i = 0; i < colors.length + 1; i++) {
 	.append('div')
 	.attr('id', 'vac-key-text-' + i)
 	.attr('class', 'vac-key-text-box')
-	.html(i)
+	.html(i * 25)
 }
 
 let namesToDisplay = [];
@@ -85,19 +86,17 @@ let casesHundredToDisplay = [];
 d3.csv('https://interactive.guim.co.uk/2021/jan/vaccinations/vaccinations.csv')
 .then(data => {
 
-	let max = d3.max(data, d => +d.people_vaccinated_per_hundred);
-
-	colorScale.domain([max/6,max/5,max/4,max/3,max/2,max])
+	/*let max = 100//d3.max(data, d => +d.people_fully_vaccinated_per_hundred);
 
 	let divider = 0;
 
-	for (var i = 1; i <= 7; i++) {
+	for (var i = 1; i <= 5; i++) {
 
 		let divider = 7 - i;
 
 		d3.select('#vac-key-text-' + i)
 		.html(Math.round(+max / divider))
-	}
+	}*/
 
 	choropleth
 	.selectAll('path')
@@ -109,7 +108,7 @@ d3.csv('https://interactive.guim.co.uk/2021/jan/vaccinations/vaccinations.csv')
 	.attr('fill', '#DADADA')
 	.attr('stroke', '#ffffff')
 	.attr('stroke-width','1px')
-	.attr('pointer-events', 'none')
+	//.attr('pointer-events', 'none')
 	.attr('stroke-linecap', 'round')
 	.on('mouseover', event => {
 		highlight(event.target.attributes.class.value)
@@ -123,7 +122,7 @@ d3.csv('https://interactive.guim.co.uk/2021/jan/vaccinations/vaccinations.csv')
 
 	isoCodes.map( code =>{
 
-		let countryDataRaw = data.filter( d => d.iso_code === code);
+		/*let countryDataRaw = data.filter( d => d.iso_code === code);
 		let countryDate = d3.max([...new Set(countryDataRaw.map(d => new Date(d.date)))]);
 
 		let country = data.filter(d => d.iso_code === code)
@@ -132,13 +131,39 @@ d3.csv('https://interactive.guim.co.uk/2021/jan/vaccinations/vaccinations.csv')
 
 		namesToDisplay[code] = latest.location;
 		casesToDisplay[code] = latest.people_vaccinated;
-		casesHundredToDisplay[code] = latest.people_vaccinated_per_hundred;
+		casesHundredToDisplay[code] = latest.people_fully_vaccinated_per_hundred;
 
 		if(latest.iso_code.length == 3)
 		{
 			d3.selectAll('.' + code)
-			.attr('fill', colorScale(+latest.people_vaccinated_per_hundred))
+			.attr('fill', colorScale(+latest.people_fully_vaccinated_per_hundred))
 			.attr('pointer-events', 'all');
+		}*/
+
+		let countryData = data.filter(f => f.iso_code === code)
+
+		let i = countryData.length-1;
+
+		while (i < countryData.length && i >= 0) {
+		  
+		  if (countryData[i].total_vaccinations_per_hundred != '' && countryData[i].total_vaccinations != '') {
+
+		  	namesToDisplay[code] = countryData[i].location;
+			casesToDisplay[code] = countryData[i].people_vaccinated;
+			casesHundredToDisplay[code] = countryData[i].people_fully_vaccinated_per_hundred;
+
+		  	if(countryData[i].iso_code.length === 3) {
+
+		  		d3.selectAll('.' + code)
+				.attr('fill', colorScale(+countryData[i].people_fully_vaccinated_per_hundred))
+				.attr('pointer-events', 'all');
+
+		  	}
+
+		    break;
+		  }
+		  
+		  i--;
 		}
 
 		

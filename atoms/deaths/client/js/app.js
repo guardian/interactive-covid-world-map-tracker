@@ -80,12 +80,12 @@ const g = map.append('g');
 const choropleth = g.append('g');
 const strokeMap = g.append('g');
 
-let colors = ['#fae0eb','#f6c1d6','#f1a1c1','#ec7fab','#e65a91','#df2770'];
+let colors = ['#D4E1DE', '#AAC4BD', '#80A69C', '#55897B', '#2A6B5B', '#004E3A'];
 
 let colorScale = d3.scaleThreshold()
 .range(colors);
 
-colors.map(d => {
+colors.forEach(d => {
 
 	d3.select('.key-bar')
 	.append('div')
@@ -102,44 +102,24 @@ for (var i = 0; i < colors.length + 1; i++) {
 	.html(i)
 }
 
-
-d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayratepermillion/cases.json')
+d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayratepermillion/deaths.json')
 .then(data => {
 
-	
-	let max = d3.max(data, d => +d.sevenDayRate[Object.getOwnPropertyNames(d.sevenDayRate)[0]]); 
+	let max = d3.max(data, d => +d.sevenDayRate[Object.getOwnPropertyNames(d.sevenDayRate)[0]]) ; 
 
-	let arr = []
+	colorScale.domain([max/6,max/5,max/4,max/3,max/2,max])
+
+	//let divider = 0;
 
 	for (var i = 1; i <= 7; i++) {
 
 		let divider = 7 - i;
 
 		d3.select('#key-text-' + i)
-		.html(numberWithCommas(Math.floor((+max / divider)/100)*100))
-
-		arr.push(Math.floor((+max / divider)/100)*100)
+		//.html(numberWithCommas(Math.round((+max * 1000000) / (divider)/100)*100))
+		//.html((((+max * 1000000) / (divider)/100)* 100	).toFixed(0))
+		.html((max / divider).toFixed(1))
 	}
-
-	let cont = 0;
-
-	arr.forEach((d,i) => {
-
-		let filtered = data.filter(f => {
-
-			let value = +f.sevenDayRate[Object.getOwnPropertyNames(f.sevenDayRate)[0]];
-
-			return value >= cont && value < d
-
-
-		}).length
-
-		console.log(filtered)
-
-		cont = d
-	})
-
-	colorScale.domain(arr)
 
 	choropleth
 	.selectAll('path')
@@ -174,19 +154,16 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 
 		let value = +d.sevenDayRate[Object.getOwnPropertyNames(d.sevenDayRate)[0]];
 
-
-		
 		namesToDisplay[replaced] = d['Country/Region'];
 		casesMillionToDisplay[replaced] = (+d.allTimeRate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0});
-		//casesToDisplay[replaced] = (+d.alltimerate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0});
-		//casesMillionToDisplay[replaced] = (+d.fortnightrate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0});
-
-		//console.log(d['Country/Region'], replaced, (+d.fortnightrate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0}))
+		//casesMillionToDisplay[replaced] = (+d.fortnightrate * 1000000)//.toLocaleString('en-GB',{maximumFractionDigits: 0});
+		//casesMillionToDisplay[replaced] = value//.toLocaleString('en-GB',{maximumFractionDigits: 0});
 
 		casesToDisplay[replaced] = value;
 
+		//console.log(d['Country/Region'], replaced, (+d.fortnightrate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0}))
+
 		map.selectAll('.' + replaced)
-		//.attr('fill', colorScale(d.fortnightrate))
 		.attr('fill', colorScale(value))
 		.attr('pointer-events', 'all')
 		
@@ -211,14 +188,17 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 
 
 	if(window.resize)window.resize()
-})
 
+	
+})
 
 
 const manageOver = (value) => {
 
 	d3.select('.tooltip-container')
 	.classed('over', true)
+
+	console.log(value, namesToDisplay[value.split(' ')[0]], casesMillionToDisplay[value], casesToDisplay[value])
 
 	let header = d3.select('.tooltip-header-container')
 	.html(namesToDisplay[value.split(' ')[0]]);
@@ -239,6 +219,8 @@ const manageOver = (value) => {
 		let perMillion = d3.select('.cases-million-value')
 		.html('-')
 	}
+
+	
 }
 
 const manageMove = (event) => {

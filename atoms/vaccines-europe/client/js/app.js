@@ -53,10 +53,11 @@ const g = map.append('g');
 const choropleth = g.append('g');
 const strokeMap = g.append('g');
 
-let colors = ['#E6F5FF', '#A1D5F2', '#5DB6E4', '#1896D7', '#056DA1', '#052962'];
+let colors = ['#E6F5FF', '#A1D5F2', '#5DB6E4', '#1896D7', '#056DA1'];
 
 let colorScale = d3.scaleThreshold()
-.range(colors);
+.range(colors)
+.domain([25,50,75,100,125]);
 
 colors.map(d => {
 
@@ -72,7 +73,7 @@ for (var i = 0; i < colors.length + 1; i++) {
 	.append('div')
 	.attr('id', 'vac-key-text-' + i)
 	.attr('class', 'vac-key-text-box')
-	.html(i)
+	.html(i*25)
 }
 
 let namesToDisplay = [];
@@ -83,19 +84,24 @@ let casesHundredToDisplay = [];
 d3.csv('https://interactive.guim.co.uk/2021/jan/vaccinations/vaccinations.csv')
 .then(data => {
 
-	let max = 100//d3.max(data, d => +d.total_vaccinations_per_hundred);
+	/*let max = 100//d3.max(data, d => +d.people_fully_vaccinated_per_hundred);
 
-	colorScale.domain([max/6,max/5,max/4,max/3,max/2,max])
+	colorScale.domain([0,25,50,75,100])
 
 	let divider = 0;
 
-	for (var i = 1; i <= 7; i++) {
+	console.log(colorScale.domain())
 
-		let divider = 7 - i;
+	for (var i = 0; i < colorScale.domain().length; i++) {
 
-		d3.select('#vac-key-text-' + i)
-		.html(Math.round(+max / divider))
-	}
+		//let divider = 6 - i;
+		if(i>0)
+		{
+			d3.select('#vac-key-text-' + i)
+		.html(colorScale.domain()[i])
+		}
+		
+	}*/
 
 	choropleth
 	.selectAll('path')
@@ -110,6 +116,8 @@ d3.csv('https://interactive.guim.co.uk/2021/jan/vaccinations/vaccinations.csv')
 	.attr('pointer-events', 'none')
 	.attr('stroke-linecap', 'round')
 	.on('mouseover', event => {
+
+		console.log(event, data)
 		highlight(event.target.attributes.class.value)
 		manageOver(event.target.attributes.class.value)
 	})
@@ -128,16 +136,18 @@ d3.csv('https://interactive.guim.co.uk/2021/jan/vaccinations/vaccinations.csv')
 
 		let latest = country.find(d => new Date(d.date).getTime() === countryDate.getTime())
 
-		//console.log(code, latest.people_vaccinated, latest.total_vaccinations_per_hundred)
+		//console.log(code, latest.people_vaccinated, latest.people_fully_vaccinated_per_hundred)
 
 		namesToDisplay[code] = latest.location;
 		casesToDisplay[code] = latest.people_vaccinated || '-';
-		casesHundredToDisplay[code] = latest.total_vaccinations_per_hundred || '-';
+		casesHundredToDisplay[code] = latest.people_fully_vaccinated_per_hundred || '-';
 
 		if(latest.iso_code.length == 3)
 		{
-			d3.selectAll('.' + code)
-			.attr('fill', colorScale(+latest.total_vaccinations_per_hundred))
+			
+
+			d3.selectAll('.interactive-vaccines-europe-wrapper .' + code)
+			.attr('fill', colorScale(+latest.people_fully_vaccinated_per_hundred))
 			.attr('pointer-events', 'all');
 		}
 
@@ -172,7 +182,7 @@ const manageOver = (value) => {
 	.html(numberWithCommas(casesToDisplay[value.split(' ')[0]]))
 
 	let perHundred = d3.select('.vac-cases-hundred-value')
-	.html(numberWithCommas(casesHundredToDisplay[value.split(' ')[0]]))
+	.html(numberWithCommas(casesHundredToDisplay[value.split(' ')[0]]) + '%')
 }
 
 const manageMove = (event) => {
