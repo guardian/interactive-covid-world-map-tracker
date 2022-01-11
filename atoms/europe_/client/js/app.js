@@ -4,24 +4,20 @@ import * as geoProjection from 'd3-geo-projection'
 //import worldMap from 'assets/ne_10m_admin_0_countries_crimea_ukraine.json'
 import worldMap from 'assets/world-map-crimea-ukr-continent.json'
 import { numberWithCommas } from 'shared/js/util'
+import * as moment from 'moment'
 import scaleCluster from 'd3-scale-cluster';
 
 const d3 = Object.assign({}, d3B, topojson, geoProjection);
 
-const atomEl = d3.select('.map-asia-container').node()
-
-const tooltip = d3.select('.tooltip-asia-container');
+const atomEl = d3.select('.map-europe-container').node()
 
 const isMobile = window.matchMedia('(max-width: 600px)').matches;
 
 let width = atomEl.getBoundingClientRect().width;
 let height =  width * 520 / 620;
 
-var projection = d3.geoAlbers()
-    //.scale(800)
-    //.center([0,60])
-    .rotate([-100,0])
-    //.parallels([50,60])
+let projection = d3.geoAlbers()
+.rotate([-20.0, 0.0]);
 
 let path = d3.geoPath()
 .projection(projection);
@@ -30,25 +26,25 @@ let extent = {
         type: "LineString",
 
          coordinates: [
-            [54, 0],
-            [140, 0],
-            [140, 40],
-            [54, 40],
+            [-8, 75],
+            [25, 75],
+            [25, 35],
+            [-8, 35],
         ]
 }
 
 projection
 .fitExtent([[0, 0], [width, height]], extent);
 
-const filtered = topojson.feature(worldMap, worldMap.objects['world-map-crimea-ukr-continent']).features.filter(f => f.properties.REGION_UN == 'Asia' || f.properties.REGION_UN == 'Europe' || f.properties.REGION_UN == 'Oceania')
+const filtered = topojson.feature(worldMap, worldMap.objects['world-map-crimea-ukr-continent']).features.filter(f => f.properties.REGION_UN == 'Europe' || f.properties.REGION_UN == 'Africa' || f.properties.REGION_UN == 'Asia')
 
 let namesToDisplay = [];
 let casesToDisplay = [];
 let casesMillionToDisplay = [];
 
-const map = d3.select('.map-asia-container')
+const map = d3.select('.map-europe-container')
 .append('svg')
-.attr('id', 'coronavirus-asia-map-svg')
+.attr('id', 'coronavirus-europe-map-svg')
 .attr('width', width)
 .attr('height', height);
 
@@ -57,23 +53,32 @@ const smalls = map.append('g')
 
 const colors = ['#fadae7', '#f4b4ce', '#ee8db4', '#e86297', '#df2770'];
 
+/*let colorScale = d3.scaleThreshold()
+.range(colors);*/
+
 colors.map(d => {
 
-	d3.select('.key-asia-bar')
+	d3.select('.key-europe-bar')
 	.append('div')
-	.attr('class', 'key-asia-color-box')
+	.attr('class', 'key-europe-color-box')
 	.style('background', d)
 })
 
 for (var i = 0; i < colors.length + 1; i++) {
 
-	d3.select('.key-asia-footer')
+	d3.select('.key-europe-footer')
 	.append('div')
-	.attr('id', 'key-asia-text-' + i)
-	.attr('class', 'key-asia-text-box')
+	.attr('id', 'key-europe-text-' + i)
+	.attr('class', 'key-europe-text-box')
 	.html(i)
 }
 
+/*d3.json('https://interactive.guim.co.uk/2020/coronavirus-central-data/timestamp.json')
+.then(t => {
+
+
+	d3.select('.interactive-europe-footer')
+	.html(`Source: Johns Hopkins University Note: JHU collates this data from multiple sources whose methodologies may differ from each other. In addition, many of the sources have changed their reporting practices since the beginning of the pandemic or made revisions to their data. Cases as published on ${moment(t.timestamp).format("DD MMM YYYY")}.`)*/
 
 d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayratepermillion/cases.json')
 .then(dataRaw => {
@@ -82,10 +87,12 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 
 	data.map(d => {
 
-		let replaced = d['Country/Region'].replace(/[^\w]/gi, '');
+		let replaced = d['Country/Region'].replace(/[^\w]/gi, '');	
 
-		if(replaced == 'Burma')replaced = 'Myanmar';
-		if(replaced == 'KoreaSouth')replaced = 'SouthKorea';
+		if(replaced == 'UK')replaced = 'UnitedKingdom';
+		if(replaced == 'CzechRepublic')replaced = 'Czechia';
+		if(replaced == 'BosniaandHerzegovina')replaced = 'BosniaandHerz';
+		if(replaced == 'NorthMacedonia')replaced = 'Macedonia';
 
 		let value = +d.sevenDayRate[Object.getOwnPropertyNames(d.sevenDayRate)[0]];
 
@@ -101,19 +108,37 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 		
 	})
 
-	const asia = filtered.filter(f => f.properties.REGION_UN == 'Asia' && f.properties.REGION_WB.indexOf('Asia') != -1 && f.sevenDayRate != undefined);
+	const europe = filtered.filter(f => f.properties.REGION_UN == 'Europe' && f.properties.REGION_WB.indexOf('Europe') != -1 && f.sevenDayRate != undefined);
+
+
+	/*let max = d3.max(filtered.filter(f => f.properties.REGION_UN == 'Europe' && f.properties.REGION_WB.indexOf('Europe') != -1), d => +d.sevenDayRate);
+
+
+	let arr = []
+
+	for (var i = 1; i <= 7; i++) {
+
+		let divider = 7 - i;
+
+		d3.select('#key-europe-text-' + i)
+		.html(numberWithCommas(Math.floor((+max / divider)/100)*100))
+
+		arr.push(Math.floor((+max / divider)/100)*100)
+	}
+
+	colorScale.domain(arr)*/
 
 	let scale = scaleCluster()
-	.domain(asia.map(d => d.sevenDayRate))
+	.domain(europe.map(d => d.sevenDayRate))
 	.range(colors)
 
 	let round = Math.pow(10,parseInt(Math.log10(scale.clusters()[0])));
 
-	scale.domain(asia.map(d => Math.floor(d.sevenDayRate / round) * round))
+	scale.domain(europe.map(d => Math.floor(d.sevenDayRate / round) * round))
 
 	colors.forEach((d,i) => {
 
-		d3.select('#key-asia-text-' + i)
+		d3.select('#key-europe-text-' + i)
 		.html(numberWithCommas(scale.invertExtent(d)[0]))
 	})
 
@@ -139,7 +164,7 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 	.on('mouseout', e => {
 		choropleth.selectAll('path').classed('map-over', false)
 
-		tooltip
+		d3.select('.interactive-europe-wrapper .tooltip-europe-container')
 		.classed('over', false)
 	})
 	.on('mousemove', e => manageMove(e))
@@ -175,7 +200,7 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 					
 					smalls.selectAll('circle').classed('map-over', false)
 
-					tooltip
+					d3.select('.tooltip-asia-container')
 					.classed('over', false)
 				})
 				
@@ -188,43 +213,46 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 
 	if(window.resize)window.resize()
 })
-
+//})
 const manageOver = (d) => {
 
-	tooltip
+	d3.select('.interactive-europe-wrapper .tooltip-europe-container')
 	.classed('over', true)
 
-	let header = d3.select('.tooltip-asia-header-container')
+	let header = d3.select('.tooltip-europe-header-container')
 	.html(d.properties.NAME);
 
 	let casesText = isNaN(+d.alltimerate) ? 'No data' : (+d.alltimerate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0})
 	let fornightText = isNaN(+d.sevenDayRate) ? 'No data' : numberWithCommas(+d.sevenDayRate);
 
-	let cases = d3.select('.cases-asia-counter-value')
+	let cases = d3.select('.cases-europe-counter-value')
 	.html(casesText)
 
-	let perMillion = d3.select('.cases-asia-million-value')
+	let perMillion = d3.select('.cases-europe-million-value')
 	.html(fornightText)
 }
 
 const manageMove = (event) => {
 
-	let left = event.layerX;
-    let top = event.layerY;
+	let left = event.clientX + -atomEl.getBoundingClientRect().left;
+    let top = event.clientY + -atomEl.getBoundingClientRect().top;
 
-    let tWidth = tooltip.node().getBoundingClientRect().width;
-    let tHeight = tooltip.node().getBoundingClientRect().height;
+
+    let tWidth = d3.select('.interactive-europe-wrapper .tooltip-europe-container').node().getBoundingClientRect().width;
+    let tHeight = d3.select('.interactive-europe-wrapper .tooltip-europe-container').node().getBoundingClientRect().height;
 
     let posX = left - tWidth /2;
-    let posY = top + 15;
+    let posY = top + tHeight +30;
 
     if(posX + tWidth > width) posX = width - tWidth;
     if(posX < 0) posX = 0;
-    if(posY + tHeight > height) posY = top - tHeight - 15;
+    if(posY + tHeight > height) posY = top ;
     if(posY < 0) posY = 0;
 
-    tooltip.style('left',  posX + 'px')
-    tooltip.style('top', posY + 'px')
+    d3.select('.interactive-europe-wrapper .tooltip-europe-container').style('left',  posX + 'px')
+    d3.select('.interactive-europe-wrapper .tooltip-europe-container').style('top', posY + 'px')
 
 }
+
+
 

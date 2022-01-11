@@ -1,0 +1,1360 @@
+[
+  {
+    "Country/Region": "Bulgaria",
+    "sevenDayRate": {
+      "1/10/22": "12000.17"
+    },
+    "allTimeRate": 0.004558434081750144
+  },
+  {
+    "Country/Region": "Georgia",
+    "sevenDayRate": {
+      "1/10/22": "-1.88"
+    },
+    "allTimeRate": 0.0035643018300325897
+  },
+  {
+    "Country/Region": "Croatia",
+    "sevenDayRate": {
+      "1/10/22": "-1.22"
+    },
+    "allTimeRate": 0.0031468940316686967
+  },
+  {
+    "Country/Region": "Hungary",
+    "sevenDayRate": {
+      "1/10/22": "-1.59"
+    },
+    "allTimeRate": 0.004135300207039338
+  },
+  {
+    "Country/Region": "Greece",
+    "sevenDayRate": {
+      "1/10/22": "-1.70"
+    },
+    "allTimeRate": 0.0020607310755060924
+  },
+  {
+    "Country/Region": "Bosnia and Herzegovina",
+    "sevenDayRate": {
+      "1/10/22": "-1.84"
+    },
+    "allTimeRate": 0.004158793050899116
+  },
+  {
+    "Country/Region": "Latvia",
+    "sevenDayRate": {
+      "1/10/22": "-1.07"
+    },
+    "allTimeRate": 0.0024713679745493105
+  },
+  {
+    "Country/Region": "Czech Republic",
+    "sevenDayRate": {
+      "1/10/22": "-1.92"
+    },
+    "allTimeRate": 0.003419927164067607
+  },
+  {
+    "Country/Region": "Eswatini",
+    "sevenDayRate": {
+      "1/10/22": "-1.20"
+    },
+    "allTimeRate": 0.0011560344827586206
+  },
+  {
+    "Country/Region": "Italy",
+    "sevenDayRate": {
+      "1/10/22": "-1.49"
+    },
+    "allTimeRate": 0.0023033475571433296
+  },
+  {
+    "Country/Region": "France",
+    "sevenDayRate": {
+      "1/10/22": "-1.24"
+    },
+    "allTimeRate": 0.0018866776970922572
+  },
+  {
+    "Country/Region": "Germany",
+    "sevenDayRate": {
+      "1/10/22": "-1.63"
+    },
+    "allTimeRate": 0.0013621574524968968
+  },
+  {
+    "Country/Region": "Bolivia",
+    "sevenDayRate": {
+      "1/10/22": "-1.89"
+    },
+    "allTimeRate": 0.0017132699391758759
+  },
+  {
+    "Country/Region": "Lebanon",
+    "sevenDayRate": {
+      "1/10/22": "-1.60"
+    },
+    "allTimeRate": 0.0013623443223443224
+  },
+  {
+    "Country/Region": "Estonia",
+    "sevenDayRate": {
+      "1/10/22": "-1.83"
+    },
+    "allTimeRate": 0.0014740015071590053
+  },
+  {
+    "Country/Region": "Denmark",
+    "sevenDayRate": {
+      "1/10/22": "-1.52"
+    },
+    "allTimeRate": 0.0005859806629834254
+  },
+  {
+    "Country/Region": "Dominica",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0006527777777777777
+  },
+  {
+    "Country/Region": "Cyprus",
+    "sevenDayRate": {
+      "1/10/22": "2.37"
+    },
+    "allTimeRate": 0.000547638773819387
+  },
+  {
+    "Country/Region": "Guyana",
+    "sevenDayRate": {
+      "1/10/22": "2.54"
+    },
+    "allTimeRate": 0.0013595933926302413
+  },
+  {
+    "Country/Region": "Belize",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0015251256281407035
+  },
+  {
+    "Country/Region": "Botswana",
+    "sevenDayRate": {
+      "1/10/22": "2.73"
+    },
+    "allTimeRate": 0.0010616496598639456
+  },
+  {
+    "Country/Region": "Finland",
+    "sevenDayRate": {
+      "1/10/22": "1.65"
+    },
+    "allTimeRate": 0.0002988630211153221
+  },
+  {
+    "Country/Region": "Belgium",
+    "sevenDayRate": {
+      "1/10/22": "1.64"
+    },
+    "allTimeRate": 0.002460569456427955
+  },
+  {
+    "Country/Region": "Cabo Verde",
+    "sevenDayRate": {
+      "1/10/22": "3.08"
+    },
+    "allTimeRate": 0.0006546762589928058
+  },
+  {
+    "Country/Region": "Barbados",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0009268292682926829
+  },
+  {
+    "Country/Region": "Belarus",
+    "sevenDayRate": {
+      "1/10/22": "1.51"
+    },
+    "allTimeRate": 0.0006057783892475394
+  },
+  {
+    "Country/Region": "Antigua and Barbuda",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0012244897959183673
+  },
+  {
+    "Country/Region": "Austria",
+    "sevenDayRate": {
+      "1/10/22": "1.52"
+    },
+    "allTimeRate": 0.0015384188318898512
+  },
+  {
+    "Country/Region": "Fiji",
+    "sevenDayRate": {
+      "1/10/22": "1.91"
+    },
+    "allTimeRate": 0.000796875
+  },
+  {
+    "Country/Region": "Canada",
+    "sevenDayRate": {
+      "1/10/22": "1.87"
+    },
+    "allTimeRate": 0.0008193524455513752
+  },
+  {
+    "Country/Region": "Cuba",
+    "sevenDayRate": {
+      "1/10/22": "2.16"
+    },
+    "allTimeRate": 0.0007499779288425885
+  },
+  {
+    "Country/Region": "Laos",
+    "sevenDayRate": {
+      "1/10/22": "1.12"
+    },
+    "allTimeRate": 0.00006157229246838923
+  },
+  {
+    "Country/Region": "South Korea",
+    "sevenDayRate": {
+      "1/10/22": "0.93"
+    },
+    "allTimeRate": 0.0001192533499775693
+  },
+  {
+    "Country/Region": "Armenia",
+    "sevenDayRate": {
+      "1/10/22": "1.01"
+    },
+    "allTimeRate": 0.0027013162335470806
+  },
+  {
+    "Country/Region": "Azerbaijan",
+    "sevenDayRate": {
+      "1/10/22": "1.04"
+    },
+    "allTimeRate": 0.0008341059276062729
+  },
+  {
+    "Country/Region": "Andorra",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0018311688311688312
+  },
+  {
+    "Country/Region": "Ireland",
+    "sevenDayRate": {
+      "1/10/22": "1.16"
+    },
+    "allTimeRate": 0.0012053462940461725
+  },
+  {
+    "Country/Region": "Chile",
+    "sevenDayRate": {
+      "1/10/22": "0.84"
+    },
+    "allTimeRate": 0.002055084745762712
+  },
+  {
+    "Country/Region": "Jamaica",
+    "sevenDayRate": {
+      "1/10/22": "1.06"
+    },
+    "allTimeRate": 0.0008439716312056738
+  },
+  {
+    "Country/Region": "Albania",
+    "sevenDayRate": {
+      "1/10/22": "1.04"
+    },
+    "allTimeRate": 0.001126129256428075
+  },
+  {
+    "Country/Region": "Colombia",
+    "sevenDayRate": {
+      "1/10/22": "0.94"
+    },
+    "allTimeRate": 0.0025626437120452802
+  },
+  {
+    "Country/Region": "Bahamas",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0018244274809160305
+  },
+  {
+    "Country/Region": "Argentina",
+    "sevenDayRate": {
+      "1/10/22": "0.94"
+    },
+    "allTimeRate": 0.002600739003451633
+  },
+  {
+    "Country/Region": "Lesotho",
+    "sevenDayRate": {
+      "1/10/22": "0.67"
+    },
+    "allTimeRate": 0.0003188608776844071
+  },
+  {
+    "Country/Region": "Australia",
+    "sevenDayRate": {
+      "1/10/22": "0.81"
+    },
+    "allTimeRate": 0.00009470588235294118
+  },
+  {
+    "Country/Region": "Brazil",
+    "sevenDayRate": {
+      "1/10/22": "0.60"
+    },
+    "allTimeRate": 0.0029185590824194695
+  },
+  {
+    "Country/Region": "Iceland",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.00011436950146627567
+  },
+  {
+    "Country/Region": "Costa Rica",
+    "sevenDayRate": {
+      "1/10/22": "0.81"
+    },
+    "allTimeRate": 0.0014491558696505694
+  },
+  {
+    "Country/Region": "Iran",
+    "sevenDayRate": {
+      "1/10/22": "0.36"
+    },
+    "allTimeRate": 0.0015705475456288024
+  },
+  {
+    "Country/Region": "Comoros",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.00018160919540229886
+  },
+  {
+    "Country/Region": "Kazakhstan",
+    "sevenDayRate": {
+      "1/10/22": "0.56"
+    },
+    "allTimeRate": 0.0009737444746232092
+  },
+  {
+    "Country/Region": "Congo (Kinshasa)",
+    "sevenDayRate": {
+      "1/10/22": "0.52"
+    },
+    "allTimeRate": 0.0002220007249003262
+  },
+  {
+    "Country/Region": "Israel",
+    "sevenDayRate": {
+      "1/10/22": "0.40"
+    },
+    "allTimeRate": 0.0009555221811460259
+  },
+  {
+    "Country/Region": "Kyrgyzstan",
+    "sevenDayRate": {
+      "1/10/22": "0.31"
+    },
+    "allTimeRate": 0.00043209687308399755
+  },
+  {
+    "Country/Region": "Egypt",
+    "sevenDayRate": {
+      "1/10/22": "0.25"
+    },
+    "allTimeRate": 0.00021493345320225927
+  },
+  {
+    "Country/Region": "Gabon",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0001325247079964061
+  },
+  {
+    "Country/Region": "Ecuador",
+    "sevenDayRate": {
+      "1/10/22": "0.11"
+    },
+    "allTimeRate": 0.0019100493113416086
+  },
+  {
+    "Country/Region": "Eritrea",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.000023124647490129724
+  },
+  {
+    "Country/Region": "India",
+    "sevenDayRate": {
+      "1/10/22": "0.20"
+    },
+    "allTimeRate": 0.00035070405593027264
+  },
+  {
+    "Country/Region": "Angola",
+    "sevenDayRate": {
+      "1/10/22": "0.25"
+    },
+    "allTimeRate": 0.000055741495770705285
+  },
+  {
+    "Country/Region": "Algeria",
+    "sevenDayRate": {
+      "1/10/22": "0.17"
+    },
+    "allTimeRate": 0.00014478575175024515
+  },
+  {
+    "Country/Region": "Bahrain",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0008207990599294947
+  },
+  {
+    "Country/Region": "Kenya",
+    "sevenDayRate": {
+      "1/10/22": "0.16"
+    },
+    "allTimeRate": 0.0001014301389224675
+  },
+  {
+    "Country/Region": "Iraq",
+    "sevenDayRate": {
+      "1/10/22": "0.13"
+    },
+    "allTimeRate": 0.0006019441613007483
+  },
+  {
+    "Country/Region": "Ghana",
+    "sevenDayRate": {
+      "1/10/22": "0.12"
+    },
+    "allTimeRate": 0.00004286679754127377
+  },
+  {
+    "Country/Region": "Dominican Republic",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0003922382005899705
+  },
+  {
+    "Country/Region": "Guatemala",
+    "sevenDayRate": {
+      "1/10/22": "0.13"
+    },
+    "allTimeRate": 0.0009000893056485823
+  },
+  {
+    "Country/Region": "Equatorial Guinea",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0001261582323592302
+  },
+  {
+    "Country/Region": "Haiti",
+    "sevenDayRate": {
+      "1/10/22": "0.18"
+    },
+    "allTimeRate": 0.00006840305182846619
+  },
+  {
+    "Country/Region": "Cote d'Ivoire",
+    "sevenDayRate": {
+      "1/10/22": "0.10"
+    },
+    "allTimeRate": 0.00002797786033816059
+  },
+  {
+    "Country/Region": "Ethiopia",
+    "sevenDayRate": {
+      "1/10/22": "0.09"
+    },
+    "allTimeRate": 0.0000612539577606903
+  },
+  {
+    "Country/Region": "El Salvador",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0005900400863398088
+  },
+  {
+    "Country/Region": "Honduras",
+    "sevenDayRate": {
+      "1/10/22": "0.14"
+    },
+    "allTimeRate": 0.0010543160020191822
+  },
+  {
+    "Country/Region": "Kuwait",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0005787871692811987
+  },
+  {
+    "Country/Region": "Guinea",
+    "sevenDayRate": {
+      "1/10/22": "0.10"
+    },
+    "allTimeRate": 0.000030457625828066704
+  },
+  {
+    "Country/Region": "Burkina Faso",
+    "sevenDayRate": {
+      "1/10/22": "0.10"
+    },
+    "allTimeRate": 0.00001593072764674927
+  },
+  {
+    "Country/Region": "Burma",
+    "sevenDayRate": {
+      "1/10/22": "0.04"
+    },
+    "allTimeRate": 0.00035458555412607975
+  },
+  {
+    "Country/Region": "Kosovo",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0016669936374458826
+  },
+  {
+    "Country/Region": "Afghanistan",
+    "sevenDayRate": {
+      "1/10/22": "0.03"
+    },
+    "allTimeRate": 0.0001894009453349774
+  },
+  {
+    "Country/Region": "Gambia",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.00014191146048820854
+  },
+  {
+    "Country/Region": "Cambodia",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0001803337520186614
+  },
+  {
+    "Country/Region": "Bangladesh",
+    "sevenDayRate": {
+      "1/10/22": "0.02"
+    },
+    "allTimeRate": 0.00017065499213669402
+  },
+  {
+    "Country/Region": "Chad",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.00001126263241202971
+  },
+  {
+    "Country/Region": "Indonesia",
+    "sevenDayRate": {
+      "1/10/22": "0.02"
+    },
+    "allTimeRate": 0.000526959243064594
+  },
+  {
+    "Country/Region": "Japan",
+    "sevenDayRate": {
+      "1/10/22": "0.01"
+    },
+    "allTimeRate": 0.0001454900534488757
+  },
+  {
+    "Country/Region": "Cameroon",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0000698033602049273
+  },
+  {
+    "Country/Region": "Congo (Brazzaville)",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0000041312624914862496
+  },
+  {
+    "Country/Region": "Benin",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.000013280541120184773
+  },
+  {
+    "Country/Region": "Bhutan",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.000003886010362694301
+  },
+  {
+    "Country/Region": "Brunei",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0002242562929061785
+  },
+  {
+    "Country/Region": "Burundi",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0000031956942225212346
+  },
+  {
+    "Country/Region": "Central African Republic",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.000020910973084886128
+  },
+  {
+    "Country/Region": "China",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0000033689426425182935
+  },
+  {
+    "Country/Region": "Djibouti",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.00019129554655870445
+  },
+  {
+    "Country/Region": "Grenada",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0017699115044247787
+  },
+  {
+    "Country/Region": "Guinea-Bissau",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.00007571138211382114
+  },
+  {
+    "Country/Region": "Jordan",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0012125845339605998
+  },
+  {
+    "Country/Region": "Kiribati",
+    "sevenDayRate": {
+      "1/10/22": "NaN"
+    },
+    "allTimeRate": null
+  },
+  {
+    "Country/Region": "Moldova",
+    "sevenDayRate": {
+      "1/10/22": "2.62"
+    },
+    "allTimeRate": 0.002573128408527516
+  },
+  {
+    "Country/Region": "Poland",
+    "sevenDayRate": {
+      "1/10/22": "8.15"
+    },
+    "allTimeRate": 0.0026359024493354823
+  },
+  {
+    "Country/Region": "Monaco",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0010769230769230769
+  },
+  {
+    "Country/Region": "Lithuania",
+    "sevenDayRate": {
+      "1/10/22": "6.04"
+    },
+    "allTimeRate": 0.002775165319617928
+  },
+  {
+    "Country/Region": "Montenegro",
+    "sevenDayRate": {
+      "1/10/22": "6.37"
+    },
+    "allTimeRate": 0.0038980891719745223
+  },
+  {
+    "Country/Region": "Russia",
+    "sevenDayRate": {
+      "1/10/22": "5.30"
+    },
+    "allTimeRate": 0.002127763235435197
+  },
+  {
+    "Country/Region": "North Macedonia",
+    "sevenDayRate": {
+      "1/10/22": "4.18"
+    },
+    "allTimeRate": 0.00386077772443591
+  },
+  {
+    "Country/Region": "Saint Lucia",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0016630434782608696
+  },
+  {
+    "Country/Region": "Liechtenstein",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0018684210526315789
+  },
+  {
+    "Country/Region": "Namibia",
+    "sevenDayRate": {
+      "1/10/22": "3.94"
+    },
+    "allTimeRate": 0.0014663518299881937
+  },
+  {
+    "Country/Region": "Luxembourg",
+    "sevenDayRate": {
+      "1/10/22": "2.97"
+    },
+    "allTimeRate": 0.001485623003194888
+  },
+  {
+    "Country/Region": "Malta",
+    "sevenDayRate": {
+      "1/10/22": "2.91"
+    },
+    "allTimeRate": 0.0011040723981900452
+  },
+  {
+    "Country/Region": "Saint Vincent and the Grenadines",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0007567567567567568
+  },
+  {
+    "Country/Region": "Romania",
+    "sevenDayRate": {
+      "1/10/22": "1.58"
+    },
+    "allTimeRate": 0.00306825033787296
+  },
+  {
+    "Country/Region": "Libya",
+    "sevenDayRate": {
+      "1/10/22": "1.43"
+    },
+    "allTimeRate": 0.0008435453354679086
+  },
+  {
+    "Country/Region": "Norway",
+    "sevenDayRate": {
+      "1/10/22": "1.19"
+    },
+    "allTimeRate": 0.0002490315439955728
+  },
+  {
+    "Country/Region": "Netherlands",
+    "sevenDayRate": {
+      "1/10/22": "0.98"
+    },
+    "allTimeRate": 0.001230697402976364
+  },
+  {
+    "Country/Region": "Peru",
+    "sevenDayRate": {
+      "1/10/22": "1.08"
+    },
+    "allTimeRate": 0.006158771078490841
+  },
+  {
+    "Country/Region": "Portugal",
+    "sevenDayRate": {
+      "1/10/22": "0.41"
+    },
+    "allTimeRate": 0.0018661370991468079
+  },
+  {
+    "Country/Region": "Mexico",
+    "sevenDayRate": {
+      "1/10/22": "0.83"
+    },
+    "allTimeRate": 0.002329380375854126
+  },
+  {
+    "Country/Region": "Panama",
+    "sevenDayRate": {
+      "1/10/22": "0.96"
+    },
+    "allTimeRate": 0.001730938586326767
+  },
+  {
+    "Country/Region": "Philippines",
+    "sevenDayRate": {
+      "1/10/22": "0.92"
+    },
+    "allTimeRate": 0.0004772086401839735
+  },
+  {
+    "Country/Region": "Malaysia",
+    "sevenDayRate": {
+      "1/10/22": "0.60"
+    },
+    "allTimeRate": 0.0009792992646604462
+  },
+  {
+    "Country/Region": "Paraguay",
+    "sevenDayRate": {
+      "1/10/22": "0.56"
+    },
+    "allTimeRate": 0.00233702509463059
+  },
+  {
+    "Country/Region": "Mauritania",
+    "sevenDayRate": {
+      "1/10/22": "0.49"
+    },
+    "allTimeRate": 0.00019096774193548386
+  },
+  {
+    "Country/Region": "Mongolia",
+    "sevenDayRate": {
+      "1/10/22": "0.52"
+    },
+    "allTimeRate": 0.0006327028676021964
+  },
+  {
+    "Country/Region": "Malawi",
+    "sevenDayRate": {
+      "1/10/22": "0.31"
+    },
+    "allTimeRate": 0.0001265028750653424
+  },
+  {
+    "Country/Region": "Mozambique",
+    "sevenDayRate": {
+      "1/10/22": "0.30"
+    },
+    "allTimeRate": 0.00006706127019676851
+  },
+  {
+    "Country/Region": "Maldives",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.00048798521256931607
+  },
+  {
+    "Country/Region": "Madagascar",
+    "sevenDayRate": {
+      "1/10/22": "0.46"
+    },
+    "allTimeRate": 0.000040338015961864865
+  },
+  {
+    "Country/Region": "Rwanda",
+    "sevenDayRate": {
+      "1/10/22": "0.30"
+    },
+    "allTimeRate": 0.00010685608400247066
+  },
+  {
+    "Country/Region": "Morocco",
+    "sevenDayRate": {
+      "1/10/22": "0.21"
+    },
+    "allTimeRate": 0.0004040800845276476
+  },
+  {
+    "Country/Region": "Qatar",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0002148559527941687
+  },
+  {
+    "Country/Region": "Oman",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0008065400430781281
+  },
+  {
+    "Country/Region": "Mali",
+    "sevenDayRate": {
+      "1/10/22": "0.05"
+    },
+    "allTimeRate": 0.000033331687324082763
+  },
+  {
+    "Country/Region": "Nepal",
+    "sevenDayRate": {
+      "1/10/22": "0.04"
+    },
+    "allTimeRate": 0.0003983251535847891
+  },
+  {
+    "Country/Region": "Niger",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.00001160821250051638
+  },
+  {
+    "Country/Region": "Nigeria",
+    "sevenDayRate": {
+      "1/10/22": "0.03"
+    },
+    "allTimeRate": 0.00001496555738818279
+  },
+  {
+    "Country/Region": "Papua New Guinea",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0000660556611154577
+  },
+  {
+    "Country/Region": "Liberia",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.000056741795175958876
+  },
+  {
+    "Country/Region": "Marshall Islands",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0
+  },
+  {
+    "Country/Region": "Mauritius",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.00018867924528301886
+  },
+  {
+    "Country/Region": "Micronesia",
+    "sevenDayRate": {
+      "1/10/22": "NaN"
+    },
+    "allTimeRate": null
+  },
+  {
+    "Country/Region": "Nicaragua",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.000032905660377358494
+  },
+  {
+    "Country/Region": "Pakistan",
+    "sevenDayRate": {
+      "1/10/22": "0.02"
+    },
+    "allTimeRate": 0.00013116817268167248
+  },
+  {
+    "Country/Region": "New Zealand",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0
+  },
+  {
+    "Country/Region": "New Zealand",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.000010576524263790958
+  },
+  {
+    "Country/Region": "Palau",
+    "sevenDayRate": {
+      "1/10/22": "NaN"
+    },
+    "allTimeRate": null
+  },
+  {
+    "Country/Region": "Trinidad and Tobago",
+    "sevenDayRate": {
+      "1/10/22": "14.91"
+    },
+    "allTimeRate": 0.0022030021443888493
+  },
+  {
+    "Country/Region": "San Marino",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0030294117647058825
+  },
+  {
+    "Country/Region": "Slovakia",
+    "sevenDayRate": {
+      "1/10/22": "6.51"
+    },
+    "allTimeRate": 0.0031115384615384616
+  },
+  {
+    "Country/Region": "Ukraine",
+    "sevenDayRate": {
+      "1/10/22": "3.78"
+    },
+    "allTimeRate": 0.0023715187268486763
+  },
+  {
+    "Country/Region": "US",
+    "sevenDayRate": {
+      "1/10/22": "4.97"
+    },
+    "allTimeRate": 0.0025362307894490383
+  },
+  {
+    "Country/Region": "Slovenia",
+    "sevenDayRate": {
+      "1/10/22": "3.30"
+    },
+    "allTimeRate": 0.0027234247234247232
+  },
+  {
+    "Country/Region": "Serbia",
+    "sevenDayRate": {
+      "1/10/22": "2.44"
+    },
+    "allTimeRate": 0.0014805997481973218
+  },
+  {
+    "Country/Region": "UK",
+    "sevenDayRate": {
+      "1/10/22": "2.81"
+    },
+    "allTimeRate": 0.0022129746928674543
+  },
+  {
+    "Country/Region": "Seychelles",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0013673469387755102
+  },
+  {
+    "Country/Region": "Vietnam",
+    "sevenDayRate": {
+      "1/10/22": "2.22"
+    },
+    "allTimeRate": 0.0003547498946979114
+  },
+  {
+    "Country/Region": "South Africa",
+    "sevenDayRate": {
+      "1/10/22": "2.93"
+    },
+    "allTimeRate": 0.0015601342123455124
+  },
+  {
+    "Country/Region": "Sao Tome and Principe",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0002876712328767123
+  },
+  {
+    "Country/Region": "Switzerland",
+    "sevenDayRate": {
+      "1/10/22": "1.96"
+    },
+    "allTimeRate": 0.0014311958405545926
+  },
+  {
+    "Country/Region": "Turkey",
+    "sevenDayRate": {
+      "1/10/22": "1.78"
+    },
+    "allTimeRate": 0.000994118972242972
+  },
+  {
+    "Country/Region": "Spain",
+    "sevenDayRate": {
+      "1/10/22": "1.72"
+    },
+    "allTimeRate": 0.0019278365950165758
+  },
+  {
+    "Country/Region": "Suriname",
+    "sevenDayRate": {
+      "1/10/22": "1.95"
+    },
+    "allTimeRate": 0.002040885860306644
+  },
+  {
+    "Country/Region": "Zimbabwe",
+    "sevenDayRate": {
+      "1/10/22": "1.28"
+    },
+    "allTimeRate": 0.0003485164502455763
+  },
+  {
+    "Country/Region": "West Bank and Gaza",
+    "sevenDayRate": {
+      "1/10/22": "1.90"
+    },
+    "allTimeRate": 0.0009776514408939424
+  },
+  {
+    "Country/Region": "Tunisia",
+    "sevenDayRate": {
+      "1/10/22": "0.99"
+    },
+    "allTimeRate": 0.0021719265589305358
+  },
+  {
+    "Country/Region": "Sri Lanka",
+    "sevenDayRate": {
+      "1/10/22": "0.65"
+    },
+    "allTimeRate": 0.0007067669172932331
+  },
+  {
+    "Country/Region": "Uruguay",
+    "sevenDayRate": {
+      "1/10/22": "0.90"
+    },
+    "allTimeRate": 0.001784398388025331
+  },
+  {
+    "Country/Region": "Sweden",
+    "sevenDayRate": {
+      "1/10/22": "0.95"
+    },
+    "allTimeRate": 0.0015226260025745122
+  },
+  {
+    "Country/Region": "Zambia",
+    "sevenDayRate": {
+      "1/10/22": "0.50"
+    },
+    "allTimeRate": 0.00020762619669277633
+  },
+  {
+    "Country/Region": "Thailand",
+    "sevenDayRate": {
+      "1/10/22": "0.20"
+    },
+    "allTimeRate": 0.000312865329512894
+  },
+  {
+    "Country/Region": "Syria",
+    "sevenDayRate": {
+      "1/10/22": "0.18"
+    },
+    "allTimeRate": 0.00016741900462830697
+  },
+  {
+    "Country/Region": "Singapore",
+    "sevenDayRate": {
+      "1/10/22": "0.22"
+    },
+    "allTimeRate": 0.00014324786324786324
+  },
+  {
+    "Country/Region": "Uganda",
+    "sevenDayRate": {
+      "1/10/22": "0.16"
+    },
+    "allTimeRate": 0.0000733914868498721
+  },
+  {
+    "Country/Region": "United Arab Emirates",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0002198179979777553
+  },
+  {
+    "Country/Region": "Venezuela",
+    "sevenDayRate": {
+      "1/10/22": "0.11"
+    },
+    "allTimeRate": 0.00018838795892530595
+  },
+  {
+    "Country/Region": "Togo",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.000030680033820509725
+  },
+  {
+    "Country/Region": "Sudan",
+    "sevenDayRate": {
+      "1/10/22": "0.03"
+    },
+    "allTimeRate": 0.00007617049419599078
+  },
+  {
+    "Country/Region": "Saudi Arabia",
+    "sevenDayRate": {
+      "1/10/22": "0.06"
+    },
+    "allTimeRate": 0.00025550066065376
+  },
+  {
+    "Country/Region": "Senegal",
+    "sevenDayRate": {
+      "1/10/22": "0.08"
+    },
+    "allTimeRate": 0.00011341376015289059
+  },
+  {
+    "Country/Region": "Uzbekistan",
+    "sevenDayRate": {
+      "1/10/22": "0.05"
+    },
+    "allTimeRate": 0.00004472795721413846
+  },
+  {
+    "Country/Region": "Sierra Leone",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.000015670051397768583
+  },
+  {
+    "Country/Region": "Somalia",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.00008399924495060718
+  },
+  {
+    "Country/Region": "Tanzania",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.00001238825459537282
+  },
+  {
+    "Country/Region": "South Sudan",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.00001214936573164195
+  },
+  {
+    "Country/Region": "Yemen",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.00006658619995976664
+  },
+  {
+    "Country/Region": "Saint Kitts and Nevis",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.0005283018867924528
+  },
+  {
+    "Country/Region": "Samoa",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0
+  },
+  {
+    "Country/Region": "Solomon Islands",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0
+  },
+  {
+    "Country/Region": "Summer Olympics 2020",
+    "sevenDayRate": {
+      "1/10/22": "NaN"
+    },
+    "allTimeRate": null
+  },
+  {
+    "Country/Region": "Taiwan",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.00003568879371877231
+  },
+  {
+    "Country/Region": "Tajikistan",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.000013105472845460265
+  },
+  {
+    "Country/Region": "Timor-Leste",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.00009256449165402125
+  },
+  {
+    "Country/Region": "Tonga",
+    "sevenDayRate": {
+      "1/10/22": "NaN"
+    },
+    "allTimeRate": null
+  },
+  {
+    "Country/Region": "Vanuatu",
+    "sevenDayRate": {
+      "1/10/22": "0.00"
+    },
+    "allTimeRate": 0.000003257328990228013
+  }
+]

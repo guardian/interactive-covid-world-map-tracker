@@ -10,8 +10,6 @@ const d3 = Object.assign({}, d3B, topojson, geoProjection);
 
 const atomEl = d3.select('.map-asia-container').node()
 
-const tooltip = d3.select('.tooltip-asia-container');
-
 const isMobile = window.matchMedia('(max-width: 600px)').matches;
 
 let width = atomEl.getBoundingClientRect().width;
@@ -56,6 +54,10 @@ const choropleth = map.append('g');
 const smalls = map.append('g')
 
 const colors = ['#fadae7', '#f4b4ce', '#ee8db4', '#e86297', '#df2770'];
+
+
+/*let colorScale = d3.scaleThreshold()
+.range(colors);*/
 
 colors.map(d => {
 
@@ -117,6 +119,27 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 		.html(numberWithCommas(scale.invertExtent(d)[0]))
 	})
 
+	/*let max = d3.max(filtered.filter(f => f.properties.REGION_UN == 'Asia' && f.properties.REGION_WB.indexOf('Asia') != -1), d => +d.sevenDayRate);
+
+	max /= 10
+
+
+	let arr = []
+
+	for (var i = 1; i <= 7; i++) {
+
+		let divider = 7 - i;
+
+		console.log(Math.round(+max / divider))
+
+		d3.select('#key-asia-text-' + i)
+		.html(numberWithCommas(Math.round((+max / divider)/25)*25))
+
+		arr.push(Math.round((+max / divider)/25)*25)
+	}
+
+	colorScale.domain(arr)*/
+
 	choropleth
 	.selectAll('path')
 	.data(filtered)
@@ -139,7 +162,7 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 	.on('mouseout', e => {
 		choropleth.selectAll('path').classed('map-over', false)
 
-		tooltip
+		d3.select('.tooltip-asia-container')
 		.classed('over', false)
 	})
 	.on('mousemove', e => manageMove(e))
@@ -175,7 +198,7 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 					
 					smalls.selectAll('circle').classed('map-over', false)
 
-					tooltip
+					d3.select('.tooltip-asia-container')
 					.classed('over', false)
 				})
 				
@@ -191,7 +214,7 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 
 const manageOver = (d) => {
 
-	tooltip
+	d3.select('.tooltip-asia-container')
 	.classed('over', true)
 
 	let header = d3.select('.tooltip-asia-header-container')
@@ -209,22 +232,23 @@ const manageOver = (d) => {
 
 const manageMove = (event) => {
 
-	let left = event.layerX;
-    let top = event.layerY;
+	let left = event.clientX + -atomEl.getBoundingClientRect().left;
+    let top = event.clientY + -atomEl.getBoundingClientRect().top;
 
-    let tWidth = tooltip.node().getBoundingClientRect().width;
-    let tHeight = tooltip.node().getBoundingClientRect().height;
+
+    let tWidth = d3.select('.tooltip-asia-container').node().getBoundingClientRect().width;
+    let tHeight = d3.select('.tooltip-asia-container').node().getBoundingClientRect().height;
 
     let posX = left - tWidth /2;
-    let posY = top + 15;
+    let posY = top + tHeight +30;
 
     if(posX + tWidth > width) posX = width - tWidth;
     if(posX < 0) posX = 0;
-    if(posY + tHeight > height) posY = top - tHeight - 15;
+    if(posY + tHeight > height) posY = top ;
     if(posY < 0) posY = 0;
 
-    tooltip.style('left',  posX + 'px')
-    tooltip.style('top', posY + 'px')
+    d3.select('.tooltip-asia-container').style('left',  posX + 'px')
+    d3.select('.tooltip-asia-container').style('top', posY + 'px')
 
 }
 

@@ -22,13 +22,13 @@
 	border-bottom: 1px solid #DCDCDC;
 }
 
-.key-container-deaths{
+.key-container{
 	max-width:500px;
 	height: max-content;
 	margin-bottom: 20px;
 }
 
-.key-bar-deaths	, .key-footer-deaths{
+.key-bar, .key-footer{
 	display: flex;
 	flex-wrap: wrap;
 }
@@ -61,7 +61,7 @@
 	color: #B3B3B4;
 }
 
-.tooltip-container-deaths{
+.tooltip-container{
 		pointer-events: none;
 		min-width:200px;
 		height: max-content;
@@ -81,7 +81,7 @@
 		}
 }
 
-.tooltip-deaths-header-container{
+.tooltip-header-container{
 	@include fs-header(1);
 	margin-bottom: 6px;
 }

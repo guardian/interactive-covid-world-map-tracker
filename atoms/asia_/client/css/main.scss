@@ -8,31 +8,31 @@
     padding: 0;
 }
 
-.interactive-world-wrapper{
+.interactive-asia-wrapper{
 	background: white;
 }
 
-.interactive-header{
+.interactive-asia-header{
 	@include fs-header(3);
 }
 
-.interactive-footer{
+.interactive-asia-footer{
 	@include fs-textSans(1);
 	color: #B3B3B4;
 	border-bottom: 1px solid #DCDCDC;
 }
 
-.key-container-deaths{
+.key-asia-container{
 	max-width:500px;
 	height: max-content;
 	margin-bottom: 20px;
 }
 
-.key-bar-deaths	, .key-footer-deaths{
+.key-asia-bar, .key-asia-footer{
 	display: flex;
 	flex-wrap: wrap;
 }
-.key-color-box, .key-text-box{
+.key-asia-color-box, .key-asia-text-box{
 	height:8px;
 	width:calc(300px / 6);
 
@@ -41,27 +41,27 @@
         width:calc(250px / 6);
     }
 }
-.key-color-box{
+.key-asia-color-box{
 	margin-right: 1px;
 }
 
-.key-text-box:last-child{
+.key-asia-text-box:last-child{
 	display:none;
 }
 
-.key-header{
+.key-asia-header{
 	@include fs-header(1);
 	font-size:16px;
 	margin-bottom: 6px;
 	margin-top: 6px;
 	color:#676767;
 }
-.key-text-box{
+.key-asia-text-box{
 	@include fs-textSans(2);
 	color: #B3B3B4;
 }
 
-.tooltip-container-deaths{
+.tooltip-asia-container{
 		pointer-events: none;
 		min-width:200px;
 		height: max-content;
@@ -71,7 +71,7 @@
 		color: #333333;
 		border-top: 1px solid #333;
 		position: absolute;
-		z-index: 100000;
+		z-index: 1;
 		line-height: 18.2px;
 
 		opacity: 0;
@@ -81,12 +81,12 @@
 		}
 }
 
-.tooltip-deaths-header-container{
+.tooltip-asia-header-container{
 	@include fs-header(1);
 	margin-bottom: 6px;
 }
 
-.cases-counter, .cases-million-counter{
+.cases-asia-counter, .cases-asia-million-counter{
 	display: flex;
 	flex-direction: row;
 	flex: 1;
@@ -94,24 +94,13 @@
 	@include fs-textSans(2);
 }
 
-.cases-counter, .cases-million-counter:not(:last-child){
+.cases-asia-counter, .cases-asia-million-counter:not(:last-child){
 	margin-bottom: 5px;
 	border-bottom: 2px dotted #b3b3b3;
 	height:20px;
 }
 
-#gv-choropleth-svg{
-	display: none;
-	position: absolute;
-	right: 0;
-	margin-top: 8px;
-}
-
-.click-text{
-	@include fs-textSans(2);
-	color: #B3B3B4;
-	margin-bottom: 8px;
-}
-.gv-background{
-	fill:white;
+.map-over{
+    stroke: #333333;
+    stroke-width:1.5px;
 }

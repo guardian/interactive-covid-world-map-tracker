@@ -9,8 +9,6 @@ const d3 = Object.assign({}, d3B, topojson, geoProjection);
 
 const atomEl = d3.select('.map-container').node()
 
-const tooltip = d3.select('.tooltip-container')
-
 const isMobile = window.matchMedia('(max-width: 600px)').matches;
 
 let width = atomEl.getBoundingClientRect().width;
@@ -111,6 +109,47 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 
 	const data = dataRaw.filter(f => !isNaN(+f.sevenDayRate[Object.getOwnPropertyNames(f.sevenDayRate)[0]]))
 
+	//let max = d3.max(data, d => +d.sevenDayRate[Object.getOwnPropertyNames(d.sevenDayRate)[0]]);
+
+	//console.log(data.find(f => +f.sevenDayRate[Object.getOwnPropertyNames(f.sevenDayRate)[0]] === max))
+
+	
+	/*let max = d3.max(data, d => +d.sevenDayRate[Object.getOwnPropertyNames(d.sevenDayRate)[0]]); 
+
+	let arr = []
+
+	for (var i = 1; i <= 7; i++) {
+
+		let divider = 7 - i;
+
+		d3.select('#key-text-' + i)
+		.html(numberWithCommas(Math.floor((+max / divider)/100)*100))
+
+		arr.push(Math.floor((+max / divider)/100)*100)
+	}
+
+	let cont = 0;
+
+	arr.forEach((d,i) => {
+
+		console.log(cont,d)
+
+		let filtered = data.filter(f => {
+
+			let value = +f.sevenDayRate[Object.getOwnPropertyNames(f.sevenDayRate)[0]];
+
+			return value >= cont && value < d
+
+
+		}).length
+
+		console.log(filtered)
+
+		cont = d
+	})
+
+	colorScale.domain(arr)*/
+
 	let scale = scaleCluster()
 	.domain(data.map(d => +d.sevenDayRate[Object.getOwnPropertyNames(d.sevenDayRate)[0]]))
 	.range(colors)
@@ -131,6 +170,8 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 		d3.select('#key-text-' + i)
 		.html(numberWithCommas(scale.invertExtent(d)[0]))
 	})
+
+	
 
 	choropleth
 	.selectAll('path')
@@ -164,14 +205,20 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 		let replaced = d['Country/Region'].replace(/[^\w]/gi, '');
 
 		let value = +d.sevenDayRate[Object.getOwnPropertyNames(d.sevenDayRate)[0]];
+
+
 		
 		namesToDisplay[replaced] = d['Country/Region'];
 		casesMillionToDisplay[replaced] = (+d.allTimeRate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0});
-		
+		//casesToDisplay[replaced] = (+d.alltimerate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0});
+		//casesMillionToDisplay[replaced] = (+d.fortnightrate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0});
+
+		//console.log(d['Country/Region'], replaced, (+d.fortnightrate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0}))
 
 		casesToDisplay[replaced] = value;
 
 		map.selectAll('.' + replaced)
+		//.attr('fill', colorScale(d.fortnightrate))
 		.attr('fill', scale(value))
 		.attr('pointer-events', 'all')
 		
@@ -202,38 +249,49 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 
 const manageOver = (value) => {
 
-	tooltip
+	d3.select('.tooltip-container')
 	.classed('over', true)
 
 	let header = d3.select('.tooltip-header-container')
 	.html(namesToDisplay[value.split(' ')[0]]);
 
-	let cases = d3.select('.cases-counter-value')
-	.html(numberWithCommas(casesMillionToDisplay[value.split(' ')[0]]))
+	if(casesMillionToDisplay[value.split(' ')[0]] && casesToDisplay[value.split(' ')[0]])
+	{
+		let cases = d3.select('.cases-counter-value')
+		.html(numberWithCommas(casesMillionToDisplay[value.split(' ')[0]]))
 
-	let perMillion = d3.select('.cases-million-value')
-	.html(numberWithCommas(casesToDisplay[value.split(' ')[0]]))
+		let perMillion = d3.select('.cases-million-value')
+		.html(numberWithCommas(casesToDisplay[value.split(' ')[0]]))
+	}
+	else
+	{
+		let cases = d3.select('.cases-counter-value')
+		.html('-')
 
+		let perMillion = d3.select('.cases-million-value')
+		.html('-')
+	}
 }
 
 const manageMove = (event) => {
 
-	let left = event.layerX;
-    let top = event.layerY;
+	let left = event.clientX + -atomEl.getBoundingClientRect().left;
+    let top = event.clientY + -atomEl.getBoundingClientRect().top;
 
-    let tWidth = tooltip.node().getBoundingClientRect().width;
-    let tHeight = tooltip.node().getBoundingClientRect().height;
+
+    let tWidth = d3.select('.tooltip-container').node().getBoundingClientRect().width;
+    let tHeight = d3.select('.tooltip-container').node().getBoundingClientRect().height;
 
     let posX = left - tWidth /2;
-    let posY = top + 15;
+    let posY = top + tHeight + 50;
 
     if(posX + tWidth > width) posX = width - tWidth;
     if(posX < 0) posX = 0;
-    if(posY + tHeight > height) posY = top - tHeight - 15;
+    if(posY + tHeight > height) posY = top + 20;
     if(posY < 0) posY = 0;
 
-    tooltip.style('left',  posX + 'px')
-    tooltip.style('top', posY + 'px')
+    d3.select('.tooltip-container').style('left',  posX + 'px')
+    d3.select('.tooltip-container').style('top', posY + 'px')
 
 }
 

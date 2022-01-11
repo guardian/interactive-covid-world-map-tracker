@@ -4,11 +4,13 @@ import * as geoProjection from 'd3-geo-projection'
 //import worldMap from 'assets/ne_10m_admin_0_countries_crimea_ukraine.json'
 import worldMap from 'assets/world-map-crimea-ukr-continent.json'
 import { numberWithCommas } from 'shared/js/util'
-import * as moment from 'moment'
+import scaleCluster from 'd3-scale-cluster';
 
 const d3 = Object.assign({}, d3B, topojson, geoProjection);
 
 const atomEl = d3.select('.map-europe-container').node()
+
+const tooltip = d3.select('.interactive-europe-wrapper .tooltip-europe-container');
 
 const isMobile = window.matchMedia('(max-width: 600px)').matches;
 
@@ -50,10 +52,7 @@ const map = d3.select('.map-europe-container')
 const choropleth = map.append('g');
 const smalls = map.append('g')
 
-let colors = ['#fae0eb','#f6c1d6','#f1a1c1','#ec7fab','#e65a91','#df2770'];
-
-let colorScale = d3.scaleThreshold()
-.range(colors);
+const colors = ['#fadae7', '#f4b4ce', '#ee8db4', '#e86297', '#df2770'];
 
 colors.map(d => {
 
@@ -72,15 +71,10 @@ for (var i = 0; i < colors.length + 1; i++) {
 	.html(i)
 }
 
-/*d3.json('https://interactive.guim.co.uk/2020/coronavirus-central-data/timestamp.json')
-.then(t => {
-
-
-	d3.select('.interactive-europe-footer')
-	.html(`Source: Johns Hopkins University Note: JHU collates this data from multiple sources whose methodologies may differ from each other. In addition, many of the sources have changed their reporting practices since the beginning of the pandemic or made revisions to their data. Cases as published on ${moment(t.timestamp).format("DD MMM YYYY")}.`)*/
-
 d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayratepermillion/cases.json')
-.then(data => {
+.then(dataRaw => {
+
+	const data = dataRaw.filter(f => !isNaN(+f.sevenDayRate[Object.getOwnPropertyNames(f.sevenDayRate)[0]]))
 
 	data.map(d => {
 
@@ -105,25 +99,21 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 		
 	})
 
-	let max = d3.max(filtered.filter(f => f.properties.REGION_UN == 'Europe' && f.properties.REGION_WB.indexOf('Europe') != -1), d => +d.sevenDayRate);
+	const europe = filtered.filter(f => f.properties.REGION_UN == 'Europe' && f.properties.REGION_WB.indexOf('Europe') != -1 && f.sevenDayRate != undefined);
 
+	let scale = scaleCluster()
+	.domain(europe.map(d => d.sevenDayRate))
+	.range(colors)
 
-	let arr = []
+	let round = Math.pow(10,parseInt(Math.log10(scale.clusters()[0])));
 
-	for (var i = 1; i <= 7; i++) {
+	scale.domain(europe.map(d => Math.floor(d.sevenDayRate / round) * round))
 
-		let divider = 7 - i;
+	colors.forEach((d,i) => {
 
 		d3.select('#key-europe-text-' + i)
-		.html(numberWithCommas(Math.floor((+max / divider)/100)*100))
-
-		arr.push(Math.floor((+max / divider)/100)*100)
-	}
-
-	colorScale.domain(arr)
-
-
-
+		.html(numberWithCommas(scale.invertExtent(d)[0]))
+	})
 
 	choropleth
 	.selectAll('path')
@@ -132,7 +122,7 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 	.append('path')
 	.attr('d', path)
 	.attr('class', d => d.properties.ISO_A3_EH)
-	.attr('fill', d => colorScale(+d.sevenDayRate) || '#dadada' )
+	.attr('fill', d => d.sevenDayRate != undefined ? scale(d.sevenDayRate) : '#dadada' )
 	.attr('stroke', '#ffffff')
 	.attr('stroke-width','1px')
 	.attr('stroke-linecap', 'round')
@@ -167,7 +157,7 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 				.attr('cx', centroid[0] - 2.5)
 				.attr('cy',  centroid[1] - 2.5)
 				.attr('class', d.properties.ISO_A3_EH)
-				.attr('fill', colorScale(d.sevenDayRate) || '#dadada')
+				.attr('fill', d.sevenDayRate != undefined ? scale(d.sevenDayRate) : '#dadada')
 				.attr('stroke', '#ffffff')
 				.attr('stroke-width','1px')
 				.on('mouseover', e => {
@@ -191,15 +181,12 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 		}
 	} )
 
-	
-
-
 	if(window.resize)window.resize()
 })
-//})
+
 const manageOver = (d) => {
 
-	d3.select('.interactive-europe-wrapper .tooltip-europe-container')
+	tooltip
 	.classed('over', true)
 
 	let header = d3.select('.tooltip-europe-header-container')
@@ -217,25 +204,22 @@ const manageOver = (d) => {
 
 const manageMove = (event) => {
 
-	console.log('aaaa', event)
+	let left = event.layerX;
+    let top = event.layerY;
 
-	let left = event.clientX + -atomEl.getBoundingClientRect().left;
-    let top = event.clientY + -atomEl.getBoundingClientRect().top;
-
-
-    let tWidth = d3.select('.interactive-europe-wrapper .tooltip-europe-container').node().getBoundingClientRect().width;
-    let tHeight = d3.select('.interactive-europe-wrapper .tooltip-europe-container').node().getBoundingClientRect().height;
+    let tWidth = tooltip.node().getBoundingClientRect().width;
+    let tHeight = tooltip.node().getBoundingClientRect().height;
 
     let posX = left - tWidth /2;
-    let posY = top + tHeight +30;
+    let posY = top + 15;
 
     if(posX + tWidth > width) posX = width - tWidth;
     if(posX < 0) posX = 0;
-    if(posY + tHeight > height) posY = top ;
+    if(posY + tHeight > height) posY = top - tHeight - 15;
     if(posY < 0) posY = 0;
 
-    d3.select('.interactive-europe-wrapper .tooltip-europe-container').style('left',  posX + 'px')
-    d3.select('.interactive-europe-wrapper .tooltip-europe-container').style('top', posY + 'px')
+    tooltip.style('left',  posX + 'px')
+    tooltip.style('top', posY + 'px')
 
 }
 

@@ -3,10 +3,13 @@ import * as topojson from 'topojson'
 import * as geoProjection from 'd3-geo-projection'
 import worldMap from 'assets/ne_10m_admin_0_countries_crimea_ukraine.json'
 import { numberWithCommas } from 'shared/js/util'
+import scaleCluster from 'd3-scale-cluster';
 
 const d3 = Object.assign({}, d3B, topojson, geoProjection);
 
-const atomEl = d3.select('.map-container').node()
+const tooltip = d3.select('.tooltip-container-deaths');
+
+const atomEl = d3.select('.map-container-deaths').node()
 
 const isMobile = window.matchMedia('(max-width: 600px)').matches;
 
@@ -60,7 +63,7 @@ let namesToDisplay = [];
 let casesToDisplay = [];
 let casesMillionToDisplay = [];
 
-const map = d3.select('.map-container')
+const map = d3.select('.map-container-deaths')
 .append('svg')
 .attr('id', 'coronavirus-world-map-svg')
 .attr('width', width)
@@ -80,14 +83,11 @@ const g = map.append('g');
 const choropleth = g.append('g');
 const strokeMap = g.append('g');
 
-let colors = ['#D4E1DE', '#AAC4BD', '#80A69C', '#55897B', '#2A6B5B', '#004E3A'];
-
-let colorScale = d3.scaleThreshold()
-.range(colors);
+let colors = ['#d4e1de', '#9dbbb4', '#68968a', '#347262', '#004e3a'];
 
 colors.forEach(d => {
 
-	d3.select('.key-bar')
+	d3.select('.key-bar-deaths')
 	.append('div')
 	.attr('class', 'key-color-box')
 	.style('background', d)
@@ -95,31 +95,37 @@ colors.forEach(d => {
 
 for (var i = 0; i < colors.length + 1; i++) {
 
-	d3.select('.key-footer')
+	d3.select('.key-footer-deaths')
 	.append('div')
-	.attr('id', 'key-text-' + i)
+	.attr('id', 'key-text-deaths' + i)
 	.attr('class', 'key-text-box')
 	.html(i)
 }
 
 d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayratepermillion/deaths.json')
-.then(data => {
+.then(dataRaw => {
 
-	let max = d3.max(data, d => +d.sevenDayRate[Object.getOwnPropertyNames(d.sevenDayRate)[0]]) ; 
+	const data = dataRaw.filter(f => !isNaN(+f.sevenDayRate[Object.getOwnPropertyNames(f.sevenDayRate)[0]]))
 
-	colorScale.domain([max/6,max/5,max/4,max/3,max/2,max])
+	let scale = scaleCluster()
+	.domain(data.map(d => +d.sevenDayRate[Object.getOwnPropertyNames(d.sevenDayRate)[0]]))
+	.range(colors)
 
-	//let divider = 0;
+	let round = Math.pow(10,parseInt(Math.log10(scale.clusters()[0])));
 
-	for (var i = 1; i <= 7; i++) {
+	scale.domain(data.map(d => {
 
-		let divider = 7 - i;
+		let value = +d.sevenDayRate[Object.getOwnPropertyNames(d.sevenDayRate)[0]];
 
-		d3.select('#key-text-' + i)
-		//.html(numberWithCommas(Math.round((+max * 1000000) / (divider)/100)*100))
-		//.html((((+max * 1000000) / (divider)/100)* 100	).toFixed(0))
-		.html((max / divider).toFixed(1))
-	}
+		return Math.floor(value / round) * round
+
+	}))
+
+	colors.forEach((d,i) => {
+
+		d3.select('#key-text-deaths' + i)
+		.html(scale.invertExtent(d)[0])
+	})
 
 	choropleth
 	.selectAll('path')
@@ -131,7 +137,6 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 		let region = d.properties.NAME;
 		let match = matches.find(f => f.atlasName == region)
 
-		//console.log(region)
 		if(match) return match.jhName.replace(/[^\w]/gi, '')
 		else return region.replace(/[^\w]/gi, '')
 	})
@@ -156,15 +161,11 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 
 		namesToDisplay[replaced] = d['Country/Region'];
 		casesMillionToDisplay[replaced] = (+d.allTimeRate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0});
-		//casesMillionToDisplay[replaced] = (+d.fortnightrate * 1000000)//.toLocaleString('en-GB',{maximumFractionDigits: 0});
-		//casesMillionToDisplay[replaced] = value//.toLocaleString('en-GB',{maximumFractionDigits: 0});
 
 		casesToDisplay[replaced] = value;
 
-		//console.log(d['Country/Region'], replaced, (+d.fortnightrate * 1000000).toLocaleString('en-GB',{maximumFractionDigits: 0}))
-
 		map.selectAll('.' + replaced)
-		.attr('fill', colorScale(value))
+		.attr('fill', scale(value))
 		.attr('pointer-events', 'all')
 		
 	})
@@ -178,8 +179,8 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 	.attr('class', d => {
 		let region = d.properties.NAME;
 		let match = matches.find(f => f.atlasName == region)
-		if(match) return 'stroke s-' + match.jhName.replace(/[^\w]/gi, '')
-		else return 'stroke s-' + region.replace(/[^\w]/gi, '')
+		if(match) return 'stroke d-' + match.jhName.replace(/[^\w]/gi, '')
+		else return 'stroke d-' + region.replace(/[^\w]/gi, '')
 	})
 	.attr('fill','none')
 	.attr('stroke-width','1.5px')
@@ -195,66 +196,52 @@ d3.json('https://interactive.guim.co.uk/2021/jan/jhu/allcountries/latest7dayrate
 
 const manageOver = (value) => {
 
-	d3.select('.tooltip-container')
+	tooltip
 	.classed('over', true)
 
-	console.log(value, namesToDisplay[value.split(' ')[0]], casesMillionToDisplay[value], casesToDisplay[value])
-
-	let header = d3.select('.tooltip-header-container')
+	let header = d3.select('.tooltip-deaths-header-container')
 	.html(namesToDisplay[value.split(' ')[0]]);
 
-	if(casesMillionToDisplay[value.split(' ')[0]] && casesToDisplay[value.split(' ')[0]])
-	{
-		let cases = d3.select('.cases-counter-value')
-		.html(numberWithCommas(casesMillionToDisplay[value.split(' ')[0]]))
+	let cases = d3.select('.deaths-counter-value')
+	.html(numberWithCommas(casesMillionToDisplay[value.split(' ')[0]]))
 
-		let perMillion = d3.select('.cases-million-value')
-		.html(numberWithCommas(casesToDisplay[value.split(' ')[0]]))
-	}
-	else
-	{
-		let cases = d3.select('.cases-counter-value')
-		.html('-')
-
-		let perMillion = d3.select('.cases-million-value')
-		.html('-')
-	}
-
-	
+	let perMillion = d3.select('.deaths-million-value')
+	.html(numberWithCommas(casesToDisplay[value.split(' ')[0]]))
 }
+
+
 
 const manageMove = (event) => {
 
-	let left = event.clientX + -atomEl.getBoundingClientRect().left;
-    let top = event.clientY + -atomEl.getBoundingClientRect().top;
+	let left = event.layerX;
+    let top = event.layerY;
 
-
-    let tWidth = d3.select('.tooltip-container').node().getBoundingClientRect().width;
-    let tHeight = d3.select('.tooltip-container').node().getBoundingClientRect().height;
+    let tWidth = tooltip.node().getBoundingClientRect().width;
+    let tHeight = tooltip.node().getBoundingClientRect().height;
 
     let posX = left - tWidth /2;
-    let posY = top + tHeight + 50;
+    let posY = top + 15;
 
     if(posX + tWidth > width) posX = width - tWidth;
     if(posX < 0) posX = 0;
-    if(posY + tHeight > height) posY = top + 20;
+    if(posY + tHeight > height) posY = top - tHeight - 15;
     if(posY < 0) posY = 0;
 
-    d3.select('.tooltip-container').style('left',  posX + 'px')
-    d3.select('.tooltip-container').style('top', posY + 'px')
+    tooltip.style('left',  posX + 'px')
+    tooltip.style('top', posY + 'px')
 
 }
 
 const highlight = (value) => {
 
-	d3.select('.s-' + value)
+	d3.select('.d-' + value)
 	.style('stroke', '#333333')
 
 }
 
 const resetHighlight = () => {
 
-	d3.select('.tooltip-container')
+	tooltip
 	.classed('over', false)
 
 	d3.selectAll('.stroke')
